@@ -8,7 +8,7 @@
     "jsx": "preserve",
     "strict": true,
     "allowJs": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": false,
     "skipLibCheck": true,
     "isolatedModules": false,
@@ -19,6 +19,18 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true
   },
-  "include": ["**/*.ts", "**/*.js", "**/*.cjs", "**/*.mjs", "*.ts", "*.js", "*.cjs", "*.mjs"],
-  "exclude": ["dist/**/*.ts", "**/*.spec.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.js",
+    "**/*.cjs",
+    "**/*.mjs",
+    "*.ts",
+    "*.js",
+    "*.cjs",
+    "*.mjs"
+  ],
+  "exclude": [
+    "dist/**/*.ts",
+    "**/*.spec.ts"
+  ]
 }

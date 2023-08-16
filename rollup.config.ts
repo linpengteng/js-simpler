@@ -10,16 +10,15 @@ import dts from 'rollup-plugin-dts'
  */
 export default defineConfig([
   {
-    input: 'src/index.ts',
+    input: 'src/browser.ts',
     output: [
       {
         dir: 'dist',
-        name: 'JSimpler',
+        name: 'js',
         format: 'umd',
-        exports: 'auto',
         sourcemap: false,
-        entryFileNames: '[name].browser.js',
-        chunkFileNames: '[name]-[hash].browser.js'
+        entryFileNames: 'index.[name].js',
+        chunkFileNames: 'index.[name]-[hash].js'
       }
     ],
     plugins: [
@@ -34,23 +33,23 @@ export default defineConfig([
   },
 
   {
-    input: 'src/index.ts',
+    input: 'src/simpler.ts',
     output: [
       {
         dir: 'dist',
         format: 'cjs',
-        exports: 'auto',
+        exports: 'named',
         sourcemap: false,
-        entryFileNames: '[name].cjs',
-        chunkFileNames: '[name]-[hash].cjs'
+        entryFileNames: 'index.[name].cjs',
+        chunkFileNames: 'index.[name]-[hash].cjs'
       },
       {
         dir: 'dist',
         format: 'es',
-        exports: 'auto',
+        exports: 'named',
         sourcemap: false,
-        entryFileNames: '[name].mjs',
-        chunkFileNames: '[name]-[hash].mjs'
+        entryFileNames: 'index.[name].mjs',
+        chunkFileNames: 'index.[name]-[hash].mjs'
       }
     ],
     plugins: [
@@ -60,7 +59,7 @@ export default defineConfig([
   },
 
   {
-    input: 'src/index.ts',
+    input: 'src/simpler.ts',
     output: {
       file: 'dist/index.d.ts',
       format: 'es',
