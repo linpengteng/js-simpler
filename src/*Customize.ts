@@ -1,5 +1,6 @@
 import { isFiniteNumber } from './-Number'
 import { isWeakMap } from './-WeakMap'
+import { isWeakSet } from './-WeakSet'
 import { isBoolean } from './-Boolean'
 import { isUndef } from './*Nullable'
 import { isRegExp } from './-RegExp'
@@ -51,10 +52,20 @@ export const size = (val: any) => {
   return 0
 }
 
-export const have = (val: any, props: string | string[]): boolean => {
-  if (isArray(val) || isObject(val)) {
-    return ([] as string[]).concat(props).every(prop => isString(prop) && Object.prototype.hasOwnProperty.call(val, prop))
-  }
+export const have = (val: any, prop: any): boolean => {
+  try {
+    if (isWeakMap(val) || isWeakSet(val) || isMap(val) || isSet(val)) {
+      return val.has(prop)
+    }
+
+    if (isArray(val) || isObject(val)) {
+      return Object.prototype.hasOwnProperty.call(val, prop)
+    }
+
+    if (isString(prop)) {
+      return prop in val
+    }
+  } catch {}
 
   return false
 }
