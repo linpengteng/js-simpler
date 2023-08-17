@@ -1,6 +1,5 @@
 import { isFiniteNumber } from './-Number'
 import { isWeakMap } from './-WeakMap'
-import { isWeakSet } from './-WeakSet'
 import { isBoolean } from './-Boolean'
 import { isUndef } from './*Nullable'
 import { isRegExp } from './-RegExp'
@@ -50,24 +49,6 @@ export const size = (val: any) => {
   }
 
   return 0
-}
-
-export const have = (val: any, prop: any): boolean => {
-  try {
-    if (isWeakMap(val) || isWeakSet(val) || isMap(val) || isSet(val)) {
-      return val.has(prop)
-    }
-
-    if (isArray(val) || isObject(val)) {
-      return Object.prototype.hasOwnProperty.call(val, prop)
-    }
-
-    if (isString(prop)) {
-      return prop in val
-    }
-  } catch {}
-
-  return false
 }
 
 export const omit = <T = unknown>(val: T, arr: CloneOmitType, deep: DeepType = false): T => {
@@ -312,7 +293,6 @@ export const deepAssign = <T = unknown>(val: T, ...rest: any[]): T => {
 export default {
   type,
   size,
-  have,
   omit,
   pick,
   equal,
