@@ -1,12 +1,17 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
+import { isFiniteNumber } from './-Number'
 
 
 export const isPromise = (val: unknown): val is Promise<unknown> => {
-  return itType(val) === 'Promise'
+  return type(val) === 'Promise'
 }
 
-export const toPromise = (val: unknown): Promise<unknown> => {
-  return Promise.resolve(val)
+export const waitPromise = <T = unknown>(wait: any) => {
+  if (isFiniteNumber(wait) && wait >= 0) {
+    return new Promise<T>(resolve => { setTimeout(resolve, wait) })
+  }
+
+  return Promise.resolve(wait)
 }
 
 export const newPromise = <T = unknown>() => {
@@ -31,6 +36,6 @@ export const newPromise = <T = unknown>() => {
 
 export default {
   isPromise,
-  toPromise,
-  newPromise
+  newPromise,
+  waitPromise
 }

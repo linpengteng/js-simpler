@@ -20,10 +20,17 @@ export const toArray = (arr: unknown): any[] => {
   return []
 }
 
+export const newArray = (arr: unknown): any[] => {
+  try { return Array.from(arr as any) } catch {}
+
+  return []
+}
+
 
 export default {
   isNonEmptyArray,
   isEmptyArray,
   isArray,
-  toArray
+  toArray,
+  newArray
 }

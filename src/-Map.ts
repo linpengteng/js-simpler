@@ -1,36 +1,32 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
 import { isObject } from './-Object'
 import { isArray } from './-Array'
 import { isSet } from './-Set'
 
 
-export function isNonEmptyMap(map: unknown): map is Map<unknown, unknown> {
+export const isNonEmptyMap = (map: unknown): map is Map<unknown, unknown> => {
   return isMap(map) && map.size > 0
 }
 
-export function isEmptyMap(map: unknown): map is Map<unknown, unknown> {
+export const isEmptyMap = (map: unknown): map is Map<unknown, unknown> => {
   return isMap(map) && map.size === 0
 }
 
-export function isMap(map: unknown): map is Map<unknown, unknown> {
-  return itType(map) === 'Map'
+export const isMap = (map: unknown): map is Map<unknown, unknown> => {
+  return type(map) === 'Map'
 }
 
-export function toMap(map: unknown): Map<unknown, unknown> {
+export const toMap = (map: unknown): Map<unknown, unknown> => {
   if (isMap(map)) {
     return map
   }
 
-  if (isArray(map) && map.every(item => isArray(item) && item.length === 2)) {
-    return new Map(map)
-  }
-
-  if (isArray(map) && !map.every(item => isArray(item) && item.length === 2)) {
-    return new Map(map.entries())
-  }
-
   if (isObject(map)) {
     return new Map(Object.entries(map))
+  }
+
+  if (isArray(map)) {
+    return new Map(map.filter(arr => isArray(arr) && arr.length === 2))
   }
 
   if (isSet(map)) {
@@ -40,10 +36,30 @@ export function toMap(map: unknown): Map<unknown, unknown> {
   return new Map()
 }
 
+export const newMap = (map: unknown): Map<unknown, unknown> => {
+  if (isObject(map)) {
+    return new Map(Object.entries(map))
+  }
+
+  if (isArray(map)) {
+    return new Map(map.filter(arr => isArray(arr) && arr.length === 2))
+  }
+
+  if (isMap(map)) {
+    return new Map(map.entries())
+  }
+
+  if (isSet(map)) {
+    return new Map(map.entries())
+  }
+
+  return new Map()
+}
 
 export default {
   isNonEmptyMap,
   isEmptyMap,
   isMap,
-  toMap
+  toMap,
+  newMap
 }

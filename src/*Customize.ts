@@ -1,5 +1,8 @@
+import { isFiniteNumber } from './-Number'
+import { isWeakMap } from './-WeakMap'
 import { isBoolean } from './-Boolean'
-import { isNumber } from './-Number'
+import { isUndef } from './*Nullable'
+import { isRegExp } from './-RegExp'
 import { isString } from './-String'
 import { isObject } from './-Object'
 import { isArray } from './-Array'
@@ -8,21 +11,21 @@ import { isSet } from './-Set'
 import { isMap } from './-Map'
 
 
-export const itType = (val: any) => {
+export type DeepType = boolean | number
+export type CloneOmitType = string | number | Array<string | number>
+export type ClonePickType = string | number | Array<string | number>
+export type CloneOptionsType = { omit?: CloneOmitTypes; pick?: ClonePickTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
+export type CloneOmitTypes = Array<string | number>
+export type ClonePickTypes = Array<string | number>
+
+
+export const type = (val: any) => {
   return Object.prototype.toString.call(val).replace(/^\[[^\s\]]+\s*([^\]]+)]$/, '$1')
 }
 
-export const itSize = (val: any) => {
-  if (isDate(val)) {
-    return +val || 0
-  }
-
+export const size = (val: any) => {
   if (isString(val)) {
-    return [...val].length
-  }
-
-  if (isNumber(val)) {
-    return val || 0
+    return [...val.trim()].length
   }
 
   if (isArray(val)) {
@@ -37,6 +40,10 @@ export const itSize = (val: any) => {
     return val === true ? 1 : 0
   }
 
+  if (isFiniteNumber(val)) {
+    return val || 0
+  }
+
   if (isMap(val) || isSet(val)) {
     return val.size
   }
@@ -44,195 +51,263 @@ export const itSize = (val: any) => {
   return 0
 }
 
-export const isEqual = (val1: unknown, val2: unknown, deep = false): boolean => {
-  if (val1 === val2) {
-    return true
-  }
-
-  if (Object.is(val1, val2)) {
-    return true
-  }
-
-  if (itType(val1) !== itType(val2)) {
-    return false
-  }
-
-  if (isObject(val1) && isObject(val2)) {
-    if (Object.keys(val1).length !== Object.keys(val2).length) {
-      return false
-    }
-
-    for (const key of Object.keys(val1)) {
-      const first = val1[key]
-      const second = val2[key]
-
-      const reuslt = deep === true
-        ? isEqual(first, second, deep)
-        : first === second
-
-      if (!reuslt) {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  if (isArray(val1) && isArray(val2)) {
-    if (val1.length !== val2.length) {
-      return false
-    }
-
-    for (const key of val1.keys()) {
-      const first = val1[key]
-      const second = val2[key]
-
-      const reuslt = deep === true
-        ? isEqual(first, second, deep)
-        : first === second
-
-      if (!reuslt) {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  if (isMap(val1) && isMap(val2)) {
-    return val1.size === val2.size && isEqual([...val1.entries()], [...val2.entries()], deep)
-  }
-
-  if (isSet(val1) && isSet(val2)) {
-    return val1.size === val2.size && isEqual([...val1.values()], [...val2.values()], deep)
+export const have = (val: any, props: string | string[]): boolean => {
+  if (isArray(val) || isObject(val)) {
+    return ([] as string[]).concat(props).every(prop => isString(prop) && Object.prototype.hasOwnProperty.call(val, prop))
   }
 
   return false
 }
 
-export const deepAssign = <T = unknown>(val: T, ...rest: unknown[]): T => {
-  let target: any
-  let sources: any
-
-  const keys = (own: any) => {
-    return isObject(own) ? Object.keys(own) : isArray(own) ? own.keys() : []
-  }
-
-  const clone = (t: any, s: any) => {
-    for (const key of keys(s)) {
-      const target = t[key]
-      const source = s[key]
-      const iIsArray = isArray(target)
-      const oIsArray = isArray(source)
-      const iIsObject = isObject(target)
-      const oIsObject = isObject(source)
-
-      if (oIsObject) {
-        clone(t[key] = iIsObject ? target : {}, source)
-        continue
-      }
-
-      if (oIsArray) {
-        clone(t[key] = iIsArray ? (target.length !== source.length && target.splice(0), target) : [], source)
-        continue
-      }
-
-      t[key] = s[key]
-    }
-  }
-
-  if (!isObject(val) && !isArray(val)) {
-    return val
-  }
-
-  if (isObject(val)) {
-    sources = [...rest]
-    target = val
-  }
-
-  if (isArray(val)) {
-    sources = [...rest]
-    target = val
-  }
-
-  if (sources) {
-    for (const source of sources) {
-      const iIsArray = isArray(target)
-      const oIsArray = isArray(source)
-      const iIsObject = isObject(target)
-      const oIsObject = isObject(source)
-      iIsObject && oIsObject && clone(target, source)
-      iIsArray && oIsArray && clone((target.length !== source.length && target.splice(0), target), source)
-    }
-  }
-
-  return target as T
+export const omit = <T = unknown>(val: T, arr: CloneOmitType, deep: DeepType = false): T => {
+  return clone(val, { omit: isArray(arr) ? arr : [arr], deep })
 }
 
-export const deepClone = <T = unknown>(val: T, ...rest: unknown[]): T => {
-  let target: any
-  let sources: any
+export const pick = <T = unknown>(val: T, arr: ClonePickType, deep: DeepType = false): T => {
+  return clone(val, { pick: isArray(arr) ? arr : [arr], deep })
+}
 
-  const keys = (own: any) => {
-    return isObject(own) ? Object.keys(own) : isArray(own) ? own.keys() : []
+export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false) : T => {
+  const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : 1
+  const omit = isObject(opts) && isArray(opts.omit) ? opts.omit : []
+  const pick = isObject(opts) && isArray(opts.pick) ? opts.pick : []
+  const cache = isObject(opts) && isWeakMap(opts.cache) ? opts.cache : new WeakMap()
+
+  const taking = (val: any) => {
+    return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
   }
 
-  const clone = (t: any, s: any) => {
-    for (const key of keys(s)) {
-      const target = t[key]
-      const source = s[key]
-      const iIsArray = isArray(target)
-      const oIsArray = isArray(source)
-      const iIsObject = isObject(target)
-      const oIsObject = isObject(source)
+  const copying = (val: T, level: number): T => {
+    const value: any = isArray(val)
+      ? []
+      : {}
 
-      if (oIsObject) {
-        clone(t[key] = iIsObject ? target : {}, source)
+    for (const [key, source] of taking(val)) {
+      if (omit.some(k => String(k) === String(key))) {
         continue
       }
 
-      if (oIsArray) {
-        clone(t[key] = iIsArray ? (target.length !== source.length && target.splice(0), target) : [], source)
+      if (!pick.every(k => String(k) === String(key))) {
         continue
       }
 
-      t[key] = s[key]
+      if (level < 1) {
+        value[key] = source
+        continue
+      }
+
+      const isCopySet = isSet(source)
+      const isCopyMap = isMap(source)
+      const isCopyDate = isDate(source)
+      const isCopyArray = isArray(source)
+      const isCopyObject = isObject(source)
+      const isCopyRegExp = isRegExp(source)
+
+      if (!isCopySet && !isCopyMap && !isCopyDate && !isCopyArray && !isCopyObject && !isCopyRegExp) {
+        value[key] = source
+        continue
+      }
+
+      if (!cache.has(source)) {
+        cache.set(source, clone(source, level - 1))
+      }
+
+      value[key] = cache.get(source)
     }
+
+    return value as T
   }
 
-  if (!isObject(val) && !isArray(val)) {
-    return val
+  if (isRegExp(val)) {
+    const flags = val.flags
+    const source = val.source
+    const regexp = new RegExp(source, flags)
+    regexp.lastIndex = val.lastIndex
+    return regexp as T
   }
 
   if (isObject(val)) {
-    sources = [val, ...rest]
-    target = {}
+    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    return level >= 1 ? copying(val, level) : val
   }
 
   if (isArray(val)) {
-    sources = [val, ...rest]
-    target = []
+    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    return level >= 1 ? copying(val, level) : val
   }
 
-  if (sources) {
-    for (const source of sources) {
-      const iIsArray = isArray(target)
-      const oIsArray = isArray(source)
-      const iIsObject = isObject(target)
-      const oIsObject = isObject(source)
-      iIsObject && oIsObject && clone(target, source)
-      iIsArray && oIsArray && clone((target.length !== source.length && target.splice(0), target), source)
+  if (isDate(val)) {
+    return new Date(+val) as T
+  }
+
+  if (isMap(val)) {
+    const maps = Array.from(val.entries()) as any
+    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    return new Map(copying(maps, level) as any) as T
+  }
+
+  if (isSet(val)) {
+    const sets = Array.from(val.values()) as any
+    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    return new Set(copying(sets, level) as any) as T
+  }
+
+  return val
+}
+
+export const equal = (one: unknown, two: unknown, deep: boolean | number = false): boolean => {
+  if (one === two) {
+    return true
+  }
+
+  if (Object.is(one, two)) {
+    return true
+  }
+
+  if (type(one) !== type(two)) {
+    return false
+  }
+
+  if (isArray(one) && isArray(two)) {
+    if (one.length !== two.length) {
+      return false
+    }
+
+    for (const key of one.keys()) {
+      const first = one[key]
+      const second = two[key]
+      const number = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const reuslt = number >= 1 ? equal(first, second, number - 1) : first === second
+
+      if (!reuslt) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  if (isObject(one) && isObject(two)) {
+    if (Object.keys(one).length !== Object.keys(two).length) {
+      return false
+    }
+
+    for (const key of Object.keys(one)) {
+      const first = one[key]
+      const second = two[key]
+      const number = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const reuslt = number >= 1 ? equal(first, second, number - 1) : first === second
+
+      if (!reuslt) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  if (isRegExp(one) && isRegExp(two)) {
+    return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
+  }
+
+  if (isDate(one) && isDate(two)) {
+    return +one === +two
+  }
+
+  if (isMap(one) && isMap(two)) {
+    return one.size === two.size && equal([...one.entries()], [...two.entries()], deep)
+  }
+
+  if (isSet(one) && isSet(two)) {
+    return one.size === two.size && equal([...one.values()], [...two.values()], deep)
+  }
+
+  return false
+}
+
+export const assign = <T = unknown>(val: T, ...rest: any[]) => {
+  const cache = new WeakMap()
+  const state = rest.slice(-1)[0]
+  const level = state === true ? Infinity : isFiniteNumber(state) ? state : 1
+
+  const taking = (val: any) => {
+    return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
+  }
+
+  const merging = (val: T, obj: T, level: number) => {
+    const refly: any = isMap(val) ? Array.from(val.entries()) : isSet(val) ? Array.from(val.values()) : val
+    const newly: any = isMap(obj) ? Array.from(obj.entries()) : isSet(obj) ? Array.from(obj.values()) : val
+
+    for (const [key, source] of taking(newly)) {
+      if (isUndef(source)) {
+        continue
+      }
+
+      if (level < 1) {
+        refly[key] = source
+        continue
+      }
+
+      const isCopySet = isSet(source)
+      const isCopyMap = isMap(source)
+      const isCopyDate = isDate(source)
+      const isCopyArray = isArray(source)
+      const isCopyObject = isObject(source)
+      const isCopyRegExp = isRegExp(source)
+
+      if (!isCopySet && !isCopyMap && !isCopyDate && !isCopyArray && !isCopyObject && !isCopyRegExp) {
+        refly[key] = source
+        continue
+      }
+
+      if (!cache.has(source)) {
+        cache.set(source, clone(source, { deep: true, cache }))
+      }
+
+      if (type(refly[key]) !== type(source)) {
+        refly[key] = cache.get(source)
+        continue
+      }
+
+      merging(refly[key], newly[key], level - 1)
     }
   }
 
-  return target as T
+  if (isObject(val) || isArray(val) || isMap(val) || isSet(val)) {
+    for (const obj of rest) {
+      if (type(val) !== type(obj)) {
+        break
+      }
+      merging(val, obj, level)
+    }
+  }
+
+  return val
+}
+
+export const deepClone = <T = unknown>(val: T): T => {
+  return clone<T>(val, { deep: true, cache: new WeakMap() })
+}
+
+export const deepEqual = (one: unknown, two: unknown): boolean => {
+  return equal(one, two, true)
+}
+
+export const deepAssign = <T = unknown>(val: T, ...rest: any[]): T => {
+  return assign<T>(val, ...rest, true)
 }
 
 
 export default {
-  itType,
-  itSize,
-  isEqual,
-  deepAssign,
-  deepClone
+  type,
+  size,
+  have,
+  omit,
+  pick,
+  equal,
+  clone,
+  assign,
+  deepClone,
+  deepEqual,
+  deepAssign
 }

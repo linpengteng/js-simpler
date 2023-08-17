@@ -1,8 +1,8 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
 
 
 export const isNumber = (num: unknown): num is number => {
-  return itType(num) === 'Number'
+  return type(num) === 'Number'
 }
 
 export const isInteger = (num: unknown): num is number => {

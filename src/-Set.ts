@@ -1,22 +1,22 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
 import { isObject } from './-Object'
 import { isArray } from './-Array'
 import { isMap } from './-Map'
 
 
-export function isNonEmptySet(set: unknown): set is Set<unknown> {
+export const isNonEmptySet = (set: unknown): set is Set<unknown> => {
   return isSet(set) && set.size > 0
 }
 
-export function isEmptySet(set: unknown): set is Set<unknown> {
+export const isEmptySet = (set: unknown): set is Set<unknown> => {
   return isSet(set) && set.size === 0
 }
 
-export function isSet(set: unknown): set is Set<unknown> {
-  return itType(set) === 'Set'
+export const isSet = (set: unknown): set is Set<unknown> => {
+  return type(set) === 'Set'
 }
 
-export function toSet(set: unknown): Set<unknown> {
+export const toSet = (set: unknown): Set<unknown> => {
   if (isSet(set)) {
     return set
   }
@@ -36,6 +36,25 @@ export function toSet(set: unknown): Set<unknown> {
   return new Set()
 }
 
+export const newSet = (set: unknown): Set<unknown> => {
+  if (isObject(set)) {
+    return new Set(Object.entries(set))
+  }
+
+  if (isArray(set)) {
+    return new Set(set)
+  }
+
+  if (isMap(set)) {
+    return new Set(set.entries())
+  }
+
+  if (isSet(set)) {
+    return new Set(set.values())
+  }
+
+  return new Set()
+}
 
 export default {
   isNonEmptySet,

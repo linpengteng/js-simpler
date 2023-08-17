@@ -1,4 +1,4 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
 import { isNullable } from './*Nullable'
 import { isFiniteNumber } from './-Number'
 import { isNonEmptyString } from './-String'
@@ -9,7 +9,7 @@ export const isValidDate = (date: unknown): date is Date => {
 }
 
 export const isDate = (date: unknown): date is Date => {
-  return itType(date) === 'Date'
+  return type(date) === 'Date'
 }
 
 export const toDate = (...rest: unknown[]): Date => {
@@ -19,6 +19,112 @@ export const toDate = (...rest: unknown[]): Date => {
 
   if (isDate(rest[0])) {
     return rest[0] as Date
+  }
+
+  if (isFiniteNumber(rest[0])) {
+    return new Date(rest[0] as number)
+  }
+
+  if (isNonEmptyString(rest[0])) {
+    let i = 0 as number
+    let year = '' as string | number
+    let month = '' as string | number
+    let date = '' as string | number
+
+    const now = new Date()
+    const arr = (rest[0] as string).split(/[/,-]|\s+/)
+
+    for (const [index, number] of arr.entries()) {
+      if (index === 0) {
+        if (!year && /^\d{4}$/.test(number)) {
+          i++
+          year = number
+          continue
+        }
+
+        if (/^\d{1,2}$/.test(number)) {
+          i++
+          month = +number - 1
+        }
+      }
+
+      if (index === 1) {
+        if (!month && /^\d{1,2}$/.test(number)) {
+          i++
+          month = +number - 1
+          continue
+        }
+
+        if (/^\d{1,2}$/.test(number)) {
+          i++
+          date = number
+        }
+      }
+
+      if (index === 2) {
+        if (!date && /^\d{1,2}$/.test(number)) {
+          i++
+          date = number
+        }
+        break
+      }
+    }
+
+    arr.splice(0, i)
+
+    if (!year) {
+      year = now.getFullYear()
+    }
+
+    if (!month && month !== 0) {
+      month = now.getMonth()
+    }
+
+    if (!date) {
+      date = now.getDate()
+    }
+
+    let hour = '00'
+    let minute = '00'
+    let seconds = '00'
+    let milliseconds = '000'
+
+    const temp = arr.find(() => /^\d{1,2}((:\d{1,2})?(:\d{1,2}([.:]\d{1,3})?)?)?$/)
+    const list = temp?.split(/[:.]/) || []
+
+    for (const [index, number] of list.entries()) {
+      if (index === 0) {
+        hour = number
+      }
+
+      if (index === 1) {
+        minute = number
+      }
+
+      if (index === 2) {
+        seconds = number
+        break
+      }
+
+      if (index === 3) {
+        milliseconds = number
+        break
+      }
+    }
+
+    return new Date(+year, +month, +date, +hour, +minute, +seconds, +milliseconds)
+  }
+
+  return new Date(NaN)
+}
+
+export const newDate = (...rest: unknown[]): Date => {
+  if (rest.length) {
+    return new Date()
+  }
+
+  if (isDate(rest[0])) {
+    return new Date(+rest[0]!)
   }
 
   if (isFiniteNumber(rest[0])) {
@@ -177,6 +283,7 @@ export default {
   isValidDate,
   isDate,
   toDate,
+  newDate,
   formatDate,
   yesterday,
   tomorrow,

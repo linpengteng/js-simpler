@@ -1,24 +1,24 @@
-import { itType } from './*Customize'
+import { type } from './*Customize'
 import { isNonEmptyString } from './-String'
 
 
-export function isGeneratorFunction(func: unknown): func is Function {
-  return itType(func) === 'GeneratorFunction'
+export const isGeneratorFunction = (func: unknown): func is Function => {
+  return type(func) === 'GeneratorFunction'
 }
 
-export function isGeneralFunction(func: unknown): func is Function {
-  return itType(func) === 'Function'
+export const isGeneralFunction = (func: unknown): func is Function => {
+  return type(func) === 'Function'
 }
 
-export function isAsyncFunction(func: unknown): func is Function {
-  return itType(func) === 'AsyncFunction'
+export const isAsyncFunction = (func: unknown): func is Function => {
+  return type(func) === 'AsyncFunction'
 }
 
-export function isFunction(func: unknown): func is Function {
+export const isFunction = (func: unknown): func is Function => {
   return isAsyncFunction(func) || isGeneralFunction(func) || isGeneratorFunction(func)
 }
 
-export function toFunction(func: unknown): Function {
+export const toFunction = (func: unknown): Function => {
   if (isFunction(func)) {
     return func
   }
