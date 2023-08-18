@@ -224,7 +224,7 @@ export const newDate = (...rest: unknown[]): Date => {
   return new Date(NaN)
 }
 
-export const formatDate = (date: unknown, format?: string): string => {
+export const showDate = (date: unknown, format?: string): string => {
   date = !isDate(date)
     ? toDate(date)
     : date
@@ -284,7 +284,7 @@ export default {
   isDate,
   toDate,
   newDate,
-  formatDate,
+  showDate,
   yesterday,
   tomorrow,
   today

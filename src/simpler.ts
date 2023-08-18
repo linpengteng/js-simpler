@@ -1,6 +1,7 @@
 import _Set from './-Set'
 import _Map from './-Map'
 import _Date from './-Date'
+import _Error from './-Error'
 import _Array from './-Array'
 import _Number from './-Number'
 import _Object from './-Object'
@@ -22,6 +23,7 @@ import { Tween } from './*Tween'
 export * from './-Set'
 export * from './-Map'
 export * from './-Date'
+export * from './-Error'
 export * from './-Array'
 export * from './-Number'
 export * from './-Object'
@@ -45,6 +47,7 @@ export default {
   ..._Set,
   ..._Map,
   ..._Date,
+  ..._Error,
   ..._Array,
   ..._Number,
   ..._Object,
