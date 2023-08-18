@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isUndef } from './*Nullable'
 import { isObject } from './-Object'
 import { isFunction } from './-Function'

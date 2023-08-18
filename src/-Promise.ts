@@ -1,6 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isFiniteNumber } from './-Number'
 import { isFunction } from './-Function'
 

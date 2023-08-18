@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isFunction } from './-Function'
 import { isPromise } from './-Promise'
 import { isRegExp } from './-RegExp'

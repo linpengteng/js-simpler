@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 
 
 export const isNonEmptyString = (str: unknown): str is string => {

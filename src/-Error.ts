@@ -1,15 +1,24 @@
+import { isString } from './-String'
 import { isObject } from './-Object'
-import { isNonEmptyString, isString } from './-String'
+import { isSymbol } from './-Symbol'
 
-class DefineCustomError extends Error {
-  recorder: {
-    type: string;
-    name: string;
-    message: string;
-    [key: string]: any;
-  }
 
-  constructor(messager?: string | Record<string, any>) {
+type DefineMessager = {
+  type?: symbol
+  name?: string
+  stack?: string
+  message?: string
+  [key: string]: any;
+}
+
+class DefineCustomError<T extends DefineMessager> extends Error {
+  type: symbol
+  override name: string
+  override stack: string
+  override message: string
+  options: { [key: string]: any; } & T
+
+  constructor(messager?: string | DefineMessager) {
     super(
       isObject(messager) && isString(messager.message)
         ? messager.message
@@ -19,29 +28,37 @@ class DefineCustomError extends Error {
     )
 
     if (isObject(messager)) {
-      this.recorder = {
-        ...messager,
-        type: isNonEmptyString(messager.type) ? messager.type : 'CustomizeError',
-        name: isNonEmptyString(messager.name) ? messager.name : 'CustomizeError',
-        message: isNonEmptyString(messager.message) ? messager.message : ''
+      this.name = isString(messager.name) && messager.name.trim() || 'CustomizeError'
+      this.type = isSymbol(messager.type) ? messager.type : Symbol.for(this.name)
+      this.stack = isString(messager.stack) ? messager.stack.trim() : ''
+      this.message = isString(messager.message) ? messager.message.trim() : ''
+
+      const skips = ['name', 'type', 'stack', 'message']
+      const temps = this.options = {} as any
+
+      for (const key in messager) {
+        if (!skips.includes(key)) {
+          temps[key] = messager[key]
+        }
       }
     }
 
     if (isString(messager)) {
-      this.recorder = {
-        type: 'CustomizeError',
-        name: 'CustomizeError',
-        message: messager.trim()
-      }
+      this.name = 'CustomizeError'
+      this.type = Symbol.for(this.name)
+      this.stack = ''
+      this.message = messager.trim()
+      this.options = {} as any
     }
 
-    this.recorder = {
-      type: 'CustomizeError',
-      name: 'CustomizeError',
-      message: ''
-    }
+    this.name = 'CustomizeError'
+    this.type = Symbol.for(this.name)
+    this.stack = ''
+    this.message = ''
+    this.options = {} as any
   }
 }
+
 
 export const isError = (err: unknown): err is Error => {
   try { return err instanceof Error } catch { return false }
@@ -71,9 +88,6 @@ export const isReferenceError = (err: unknown): err is ReferenceError => {
   try { return err instanceof ReferenceError } catch { return false }
 }
 
-export const isCustomizeError = (err: unknown): err is DefineCustomError => {
-  try { return err instanceof DefineCustomError } catch { return false }
-}
 
 export const newError = (message?: string): Error => {
   return new Error(message)
@@ -103,7 +117,17 @@ export const newReferenceError = (message?: string): ReferenceError => {
   return new ReferenceError(message)
 }
 
-export const newCustomizeError = (messager?: string | Record<string, any>): DefineCustomError => {
+
+export const isCustomizeError = <T extends Record<string, any> = any>(err: unknown, type?: symbol): err is DefineCustomError<T> => {
+  try {
+    return (
+      (err instanceof DefineCustomError) &&
+      (type === undefined || err.type === type)
+    )
+  } catch { return false }
+}
+
+export const newCustomizeError = <T extends Record<string, any> = any>(messager?: string | DefineMessager): DefineCustomError<T> => {
   return new DefineCustomError(messager)
 }
 
@@ -116,7 +140,6 @@ export default {
   isRangeError,
   isSyntaxError,
   isReferenceError,
-  isCustomizeError,
 
   newError,
   newURIError,
@@ -125,5 +148,7 @@ export default {
   newRangeError,
   newSyntaxError,
   newReferenceError,
+
+  isCustomizeError,
   newCustomizeError
 }

@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isArray } from './-Array'
 import { isMap } from './-Map'
 import { isSet } from './-Set'

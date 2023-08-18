@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isNullable } from './*Nullable'
 import { isFiniteNumber } from './-Number'
 import { isNonEmptyString } from './-String'

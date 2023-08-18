@@ -1,4 +1,4 @@
-import { type } from './*Customize'
+import { type } from './*Generalize'
 import { isString } from './-String'
 import { isBoolean } from './-Boolean'
 
