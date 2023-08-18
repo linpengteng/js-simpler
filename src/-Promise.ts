@@ -1,17 +1,27 @@
+/* eslint-disable no-prototype-builtins */
+
 import { type } from './*Customize'
 import { isFiniteNumber } from './-Number'
+import { isFunction } from './-Function'
 
 
 export const isPromise = (val: unknown): val is Promise<unknown> => {
   return type(val) === 'Promise'
 }
 
-export const waitPromise = <T = unknown>(wait: any) => {
-  if (isFiniteNumber(wait) && wait >= 0) {
-    return new Promise<T>(resolve => { setTimeout(resolve, wait) })
+export const toPromise = <T = unknown>(wait?: Function | number | unknown): Promise<T> => {
+  if (isFunction(wait)) {
+    return Promise.resolve<T>(wait())
   }
 
-  return Promise.resolve(wait)
+  if (isFiniteNumber(wait)) {
+    return new Promise<T>((resolve, reject) => {
+      wait >= 0 && setTimeout(resolve, wait)
+      wait < 0 && setTimeout(reject, -wait)
+    })
+  }
+
+  return Promise.resolve<T>(wait as T)
 }
 
 export const newPromise = <T = unknown>() => {
@@ -36,6 +46,6 @@ export const newPromise = <T = unknown>() => {
 
 export default {
   isPromise,
-  newPromise,
-  waitPromise
+  toPromise,
+  newPromise
 }

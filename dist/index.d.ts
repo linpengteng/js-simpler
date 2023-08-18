@@ -80,7 +80,7 @@ declare const isFalse: (bool: unknown) => bool is false;
 declare const isBoolean: (bool: unknown) => bool is boolean;
 
 declare const isPromise: (val: unknown) => val is Promise<unknown>;
-declare const waitPromise: <T = unknown>(wait: any) => Promise<any>;
+declare const toPromise: <T = unknown>(wait?: Function | number | unknown) => Promise<T>;
 declare const newPromise: <T = unknown>() => {
     promise: Promise<T>;
     resolve: (value: T | PromiseLike<T>) => void;
@@ -194,12 +194,12 @@ declare const _default: {
     toWeakSet: (set: unknown) => WeakSet<object>;
     newWeakSet: (set: unknown) => WeakSet<object>;
     isPromise: (val: unknown) => val is Promise<unknown>;
-    newPromise: <T_6 = unknown>() => {
-        promise: Promise<T_6>;
-        resolve: (value: T_6 | PromiseLike<T_6>) => void;
+    toPromise: <T_6 = unknown>(wait?: unknown) => Promise<T_6>;
+    newPromise: <T_7 = unknown>() => {
+        promise: Promise<T_7>;
+        resolve: (value: T_7 | PromiseLike<T_7>) => void;
         reject: (reason?: any) => void;
     };
-    waitPromise: <T_7 = unknown>(wait: any) => Promise<any>;
     isTrue: (bool: unknown) => bool is true;
     isFalse: (bool: unknown) => bool is false;
     isBoolean: (bool: unknown) => bool is boolean;
@@ -284,4 +284,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOmitType, type CloneOmitTypes, type CloneOptionsType, type ClonePickType, type ClonePickTypes, type DeepType, Tween, assign, camelCase, clone, deepAssign, deepClone, deepEqual, _default as default, equal, formatDate, hyphenate, isArray, isAsyncFunction, isBoolean, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isTrue, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newDate, newMap, newObject, newPromise, newRegExp, newSet, newSymbol, newSymbolFor, newWeakMap, newWeakSet, omit, pick, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, waitPromise, yesterday };
+export { type CloneOmitType, type CloneOmitTypes, type CloneOptionsType, type ClonePickType, type ClonePickTypes, type DeepType, Tween, assign, camelCase, clone, deepAssign, deepClone, deepEqual, _default as default, equal, formatDate, hyphenate, isArray, isAsyncFunction, isBoolean, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isTrue, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newDate, newMap, newObject, newPromise, newRegExp, newSet, newSymbol, newSymbolFor, newWeakMap, newWeakSet, omit, pick, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };
