@@ -36,10 +36,36 @@ declare const isValidDate: (date: unknown) => date is Date;
 declare const isDate: (date: unknown) => date is Date;
 declare const toDate: (...rest: unknown[]) => Date;
 declare const newDate: (...rest: unknown[]) => Date;
-declare const formatDate: (date: unknown, format?: string) => string;
+declare const showDate: (date: unknown, format?: string) => string;
 declare const yesterday: () => Date;
 declare const tomorrow: () => Date;
 declare const today: () => Date;
+
+declare class DefineCustomError extends Error {
+    recorder: {
+        type: string;
+        name: string;
+        message: string;
+        [key: string]: any;
+    };
+    constructor(messager?: string | Record<string, any>);
+}
+declare const isError: (err: unknown) => err is Error;
+declare const isURIError: (err: unknown) => err is URIError;
+declare const isTypeError: (err: unknown) => err is TypeError;
+declare const isEvalError: (err: unknown) => err is EvalError;
+declare const isRangeError: (err: unknown) => err is RangeError;
+declare const isSyntaxError: (err: unknown) => err is SyntaxError;
+declare const isReferenceError: (err: unknown) => err is ReferenceError;
+declare const isCustomizeError: (err: unknown) => err is DefineCustomError;
+declare const newError: (message?: string) => Error;
+declare const newURIError: (message?: string) => URIError;
+declare const newTypeError: (message?: string) => TypeError;
+declare const newEvalError: (message?: string) => EvalError;
+declare const newRangeError: (message?: string) => RangeError;
+declare const newSyntaxError: (message?: string) => SyntaxError;
+declare const newReferenceError: (message?: string) => ReferenceError;
+declare const newCustomizeError: (messager?: string | Record<string, any>) => DefineCustomError;
 
 declare const isNonEmptyArray: (arr: unknown) => arr is any[];
 declare const isEmptyArray: (arr: unknown) => arr is any[];
@@ -231,11 +257,49 @@ declare const _default: {
     isArray: (arr: unknown) => arr is any[];
     toArray: (arr: unknown) => any[];
     newArray: (arr: unknown) => any[];
+    isError: (err: unknown) => err is Error;
+    isURIError: (err: unknown) => err is URIError;
+    isTypeError: (err: unknown) => err is TypeError;
+    isEvalError: (err: unknown) => err is EvalError;
+    isRangeError: (err: unknown) => err is RangeError;
+    isSyntaxError: (err: unknown) => err is SyntaxError;
+    isReferenceError: (err: unknown) => err is ReferenceError;
+    isCustomizeError: (err: unknown) => err is {
+        recorder: {
+            [key: string]: any;
+            type: string;
+            name: string;
+            message: string;
+        };
+        name: string;
+        message: string;
+        stack?: string | undefined;
+        cause?: unknown;
+    };
+    newError: (message?: string | undefined) => Error;
+    newURIError: (message?: string | undefined) => URIError;
+    newTypeError: (message?: string | undefined) => TypeError;
+    newEvalError: (message?: string | undefined) => EvalError;
+    newRangeError: (message?: string | undefined) => RangeError;
+    newSyntaxError: (message?: string | undefined) => SyntaxError;
+    newReferenceError: (message?: string | undefined) => ReferenceError;
+    newCustomizeError: (messager?: string | Record<string, any> | undefined) => {
+        recorder: {
+            [key: string]: any;
+            type: string;
+            name: string;
+            message: string;
+        };
+        name: string;
+        message: string;
+        stack?: string | undefined;
+        cause?: unknown;
+    };
     isValidDate: (date: unknown) => date is Date;
     isDate: (date: unknown) => date is Date;
     toDate: (...rest: unknown[]) => Date;
     newDate: (...rest: unknown[]) => Date;
-    formatDate: (date: unknown, format?: string | undefined) => string;
+    showDate: (date: unknown, format?: string | undefined) => string;
     yesterday: () => Date;
     tomorrow: () => Date;
     today: () => Date;
@@ -284,4 +348,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOmitType, type CloneOmitTypes, type CloneOptionsType, type ClonePickType, type ClonePickTypes, type DeepType, Tween, assign, camelCase, clone, deepAssign, deepClone, deepEqual, _default as default, equal, formatDate, hyphenate, isArray, isAsyncFunction, isBoolean, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRegExp, isSet, isString, isSymbol, isTrue, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newDate, newMap, newObject, newPromise, newRegExp, newSet, newSymbol, newSymbolFor, newWeakMap, newWeakSet, omit, pick, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };
+export { type CloneOmitType, type CloneOmitTypes, type CloneOptionsType, type ClonePickType, type ClonePickTypes, type DeepType, Tween, assign, camelCase, clone, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };

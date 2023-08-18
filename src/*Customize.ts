@@ -24,6 +24,10 @@ export const type = (val: any) => {
 }
 
 export const size = (val: any) => {
+  if (isDate(val)) {
+    return +val || 0
+  }
+
   if (isString(val)) {
     return [...val.trim()].length
   }
