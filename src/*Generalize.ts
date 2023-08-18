@@ -15,6 +15,7 @@ export type DeepType = boolean | number
 export type CloneOmitType = string | number | Array<string | number>
 export type ClonePickType = string | number | Array<string | number>
 export type CloneOptionsType = { omit?: CloneOmitTypes; pick?: ClonePickTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
+export type EqualOptionsType = { strict?: Array<string | number>; filter?: Array<string | number>; deep?: DeepType; }
 export type CloneOmitTypes = Array<string | number>
 export type ClonePickTypes = Array<string | number>
 
@@ -64,9 +65,9 @@ export const pick = <T = unknown>(val: T, arr: ClonePickType, deep: DeepType = f
 }
 
 export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false) : T => {
-  const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : 1
-  const omit = isObject(opts) && isArray(opts.omit) ? opts.omit : []
-  const pick = isObject(opts) && isArray(opts.pick) ? opts.pick : []
+  const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+  const omit = isObject(opts) && isArray(opts.omit) ? opts.omit.filter(key => isString(key) || isFiniteNumber(key)) : []
+  const pick = isObject(opts) && isArray(opts.pick) ? opts.pick.filter(key => isString(key) || isFiniteNumber(key)) : []
   const cache = isObject(opts) && isWeakMap(opts.cache) ? opts.cache : new WeakMap()
 
   const taking = (val: any) => {
@@ -151,7 +152,7 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
   return val
 }
 
-export const equal = (one: unknown, two: unknown, deep: boolean | number = false): boolean => {
+export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepType = false): boolean => {
   if (one === two) {
     return true
   }
@@ -169,11 +170,32 @@ export const equal = (one: unknown, two: unknown, deep: boolean | number = false
       return false
     }
 
+    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isString(key) || isFiniteNumber(key)) : []
+    const filter = isObject(opts) && isArray(opts.filter) ? opts.filter.filter(key => isString(key) || isFiniteNumber(key)) : []
+
     for (const key of one.keys()) {
-      const first = one[key]
-      const second = two[key]
-      const number = deep === true ? Infinity : +deep >= 1 ? +deep : 1
-      const reuslt = number >= 1 ? equal(first, second, number - 1) : first === second
+      const val1 = one[key]
+      const val2 = two[key]
+      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const stricted = strict.length > 0 && strict.some(k => String(k) === String(key))
+      const filtered = filter.length <= 0 || filter.some(k => String(k) === String(key))
+
+      if (val1 === val2) {
+        continue
+      }
+
+      if (stricted) {
+        return false
+      }
+
+      if (!filtered) {
+        continue
+      }
+
+      const reuslt = level >= 1
+        ? equal(val1, val2, level - 1)
+        : false
 
       if (!reuslt) {
         return false
@@ -188,11 +210,32 @@ export const equal = (one: unknown, two: unknown, deep: boolean | number = false
       return false
     }
 
+    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isString(key) || isFiniteNumber(key)) : []
+    const filter = isObject(opts) && isArray(opts.filter) ? opts.filter.filter(key => isString(key) || isFiniteNumber(key)) : []
+
     for (const key of Object.keys(one)) {
-      const first = one[key]
-      const second = two[key]
-      const number = deep === true ? Infinity : +deep >= 1 ? +deep : 1
-      const reuslt = number >= 1 ? equal(first, second, number - 1) : first === second
+      const val1 = one[key]
+      const val2 = two[key]
+      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const stricted = strict.length > 0 && strict.some(k => String(k) === String(key))
+      const filtered = filter.length <= 0 || filter.some(k => String(k) === String(key))
+
+      if (val1 === val2) {
+        continue
+      }
+
+      if (stricted) {
+        return false
+      }
+
+      if (!filtered) {
+        continue
+      }
+
+      const reuslt = level >= 1
+        ? equal(val1, val2, level - 1)
+        : false
 
       if (!reuslt) {
         return false
@@ -211,11 +254,11 @@ export const equal = (one: unknown, two: unknown, deep: boolean | number = false
   }
 
   if (isMap(one) && isMap(two)) {
-    return one.size === two.size && equal([...one.entries()], [...two.entries()], deep)
+    return one.size === two.size && equal([...one.entries()], [...two.entries()], opts)
   }
 
   if (isSet(one) && isSet(two)) {
-    return one.size === two.size && equal([...one.values()], [...two.values()], deep)
+    return one.size === two.size && equal([...one.values()], [...two.values()], opts)
   }
 
   return false
