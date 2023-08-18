@@ -12,12 +12,10 @@ import { isMap } from './-Map'
 
 
 export type DeepType = boolean | number
-export type CloneOmitType = string | number | Array<string | number>
-export type ClonePickType = string | number | Array<string | number>
-export type CloneOptionsType = { omit?: CloneOmitTypes; pick?: ClonePickTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
-export type EqualOptionsType = { strict?: Array<string | number>; filter?: Array<string | number>; deep?: DeepType; }
-export type CloneOmitTypes = Array<string | number>
-export type ClonePickTypes = Array<string | number>
+export type FilterType = string | number | RegExp
+export type FilterTypes = Array<string | number | RegExp>
+export type CloneOptionsType = { omit?: FilterTypes; pick?: FilterTypes; copy?: FilterTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
+export type EqualOptionsType = { strict?: FilterTypes; include?:FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
 
 
 export const type = (val: any) => {
@@ -56,35 +54,157 @@ export const size = (val: any) => {
   return 0
 }
 
-export const omit = <T = unknown>(val: T, arr: CloneOmitType, deep: DeepType = false): T => {
+export const omit = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
   return clone(val, { omit: isArray(arr) ? arr : [arr], deep })
 }
 
-export const pick = <T = unknown>(val: T, arr: ClonePickType, deep: DeepType = false): T => {
+export const pick = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
   return clone(val, { pick: isArray(arr) ? arr : [arr], deep })
+}
+
+export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepType = false): boolean => {
+  if (one === two) {
+    return true
+  }
+
+  if (Object.is(one, two)) {
+    return true
+  }
+
+  if (type(one) !== type(two)) {
+    return false
+  }
+
+  if (isArray(one) && isArray(two)) {
+    if (one.length !== two.length) {
+      return false
+    }
+
+    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
+
+    for (const key of one.keys()) {
+      const val1 = one[key]
+      const val2 = two[key]
+      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+
+      if (excluded || !included) {
+        continue
+      }
+
+      if (val1 === val2) {
+        continue
+      }
+
+      if (stricted) {
+        return false
+      }
+
+      const reuslt = level >= 1
+        ? equal(val1, val2, level - 1)
+        : false
+
+      if (!reuslt) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  if (isObject(one) && isObject(two)) {
+    if (Object.keys(one).length !== Object.keys(two).length) {
+      return false
+    }
+
+    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
+
+    for (const key of Object.keys(one)) {
+      const val1 = one[key]
+      const val2 = two[key]
+      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+
+      if (excluded || !included) {
+        continue
+      }
+
+      if (val1 === val2) {
+        continue
+      }
+
+      if (stricted) {
+        return false
+      }
+
+      const reuslt = level >= 1
+        ? equal(val1, val2, level - 1)
+        : false
+
+      if (!reuslt) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  if (isRegExp(one) && isRegExp(two)) {
+    return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
+  }
+
+  if (isDate(one) && isDate(two)) {
+    return +one === +two
+  }
+
+  if (isMap(one) && isMap(two)) {
+    return one.size === two.size && equal([...one.entries()], [...two.entries()], opts)
+  }
+
+  if (isSet(one) && isSet(two)) {
+    return one.size === two.size && equal([...one.values()], [...two.values()], opts)
+  }
+
+  return false
 }
 
 export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false) : T => {
   const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-  const omit = isObject(opts) && isArray(opts.omit) ? opts.omit.filter(key => isString(key) || isFiniteNumber(key)) : []
-  const pick = isObject(opts) && isArray(opts.pick) ? opts.pick.filter(key => isString(key) || isFiniteNumber(key)) : []
+  const omits = isObject(opts) && isArray(opts.omit) ? opts.omit.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+  const picks = isObject(opts) && isArray(opts.pick) ? opts.pick.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+  const copys = isObject(opts) && isArray(opts.copy) ? opts.copy.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
   const cache = isObject(opts) && isWeakMap(opts.cache) ? opts.cache : new WeakMap()
 
   const taking = (val: any) => {
     return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
   }
 
-  const copying = (val: T, level: number): T => {
+  const cloning = (val: T, level: number): T => {
     const value: any = isArray(val)
       ? []
       : {}
 
     for (const [key, source] of taking(val)) {
-      if (omit.some(k => String(k) === String(key))) {
+      if (!picks.every(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
         continue
       }
 
-      if (!pick.every(k => String(k) === String(key))) {
+      if (omits.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
+        continue
+      }
+
+      if (copys.every(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
+        value[key] = source
         continue
       }
 
@@ -125,12 +245,12 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
 
   if (isObject(val)) {
     const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return level >= 1 ? copying(val, level) : val
+    return level >= 1 ? cloning(val, level) : val
   }
 
   if (isArray(val)) {
     const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return level >= 1 ? copying(val, level) : val
+    return level >= 1 ? cloning(val, level) : val
   }
 
   if (isDate(val)) {
@@ -140,128 +260,16 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
   if (isMap(val)) {
     const maps = Array.from(val.entries()) as any
     const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return new Map(copying(maps, level) as any) as T
+    return new Map(cloning(maps, level) as any) as T
   }
 
   if (isSet(val)) {
     const sets = Array.from(val.values()) as any
     const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return new Set(copying(sets, level) as any) as T
+    return new Set(cloning(sets, level) as any) as T
   }
 
   return val
-}
-
-export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepType = false): boolean => {
-  if (one === two) {
-    return true
-  }
-
-  if (Object.is(one, two)) {
-    return true
-  }
-
-  if (type(one) !== type(two)) {
-    return false
-  }
-
-  if (isArray(one) && isArray(two)) {
-    if (one.length !== two.length) {
-      return false
-    }
-
-    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isString(key) || isFiniteNumber(key)) : []
-    const filter = isObject(opts) && isArray(opts.filter) ? opts.filter.filter(key => isString(key) || isFiniteNumber(key)) : []
-
-    for (const key of one.keys()) {
-      const val1 = one[key]
-      const val2 = two[key]
-      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
-      const stricted = strict.length > 0 && strict.some(k => String(k) === String(key))
-      const filtered = filter.length <= 0 || filter.some(k => String(k) === String(key))
-
-      if (val1 === val2) {
-        continue
-      }
-
-      if (stricted) {
-        return false
-      }
-
-      if (!filtered) {
-        continue
-      }
-
-      const reuslt = level >= 1
-        ? equal(val1, val2, level - 1)
-        : false
-
-      if (!reuslt) {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  if (isObject(one) && isObject(two)) {
-    if (Object.keys(one).length !== Object.keys(two).length) {
-      return false
-    }
-
-    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isString(key) || isFiniteNumber(key)) : []
-    const filter = isObject(opts) && isArray(opts.filter) ? opts.filter.filter(key => isString(key) || isFiniteNumber(key)) : []
-
-    for (const key of Object.keys(one)) {
-      const val1 = one[key]
-      const val2 = two[key]
-      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
-      const stricted = strict.length > 0 && strict.some(k => String(k) === String(key))
-      const filtered = filter.length <= 0 || filter.some(k => String(k) === String(key))
-
-      if (val1 === val2) {
-        continue
-      }
-
-      if (stricted) {
-        return false
-      }
-
-      if (!filtered) {
-        continue
-      }
-
-      const reuslt = level >= 1
-        ? equal(val1, val2, level - 1)
-        : false
-
-      if (!reuslt) {
-        return false
-      }
-    }
-
-    return true
-  }
-
-  if (isRegExp(one) && isRegExp(two)) {
-    return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
-  }
-
-  if (isDate(one) && isDate(two)) {
-    return +one === +two
-  }
-
-  if (isMap(one) && isMap(two)) {
-    return one.size === two.size && equal([...one.entries()], [...two.entries()], opts)
-  }
-
-  if (isSet(one) && isSet(two)) {
-    return one.size === two.size && equal([...one.values()], [...two.values()], opts)
-  }
-
-  return false
 }
 
 export const assign = <T = unknown>(val: T, ...rest: any[]) => {

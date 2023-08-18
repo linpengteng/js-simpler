@@ -81,27 +81,27 @@ interface CurryFn5<T1, T2, T3, T4, T5, R> {
 declare const curry: Curry;
 
 type DeepType = boolean | number;
-type CloneOmitType = string | number | Array<string | number>;
-type ClonePickType = string | number | Array<string | number>;
+type FilterType = string | number | RegExp;
+type FilterTypes = Array<string | number | RegExp>;
 type CloneOptionsType = {
-    omit?: CloneOmitTypes;
-    pick?: ClonePickTypes;
+    omit?: FilterTypes;
+    pick?: FilterTypes;
+    copy?: FilterTypes;
     deep?: DeepType;
     cache?: WeakMap<object, unknown>;
 };
 type EqualOptionsType = {
-    strict?: Array<string | number>;
-    filter?: Array<string | number>;
+    strict?: FilterTypes;
+    include?: FilterTypes;
+    exclude?: FilterTypes;
     deep?: DeepType;
 };
-type CloneOmitTypes = Array<string | number>;
-type ClonePickTypes = Array<string | number>;
 declare const type: (val: any) => string;
 declare const size: (val: any) => number;
-declare const omit: <T = unknown>(val: T, arr: CloneOmitType, deep?: DeepType) => T;
-declare const pick: <T = unknown>(val: T, arr: ClonePickType, deep?: DeepType) => T;
-declare const clone: <T = unknown>(val: T, opts?: CloneOptionsType | DeepType) => T;
+declare const omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
+declare const pick: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
 declare const equal: (one: unknown, two: unknown, opts?: EqualOptionsType | DeepType) => boolean;
+declare const clone: <T = unknown>(val: T, opts?: CloneOptionsType | DeepType) => T;
 declare const assign: <T = unknown>(val: T, ...rest: any[]) => T;
 declare const deepClone: <T = unknown>(val: T) => T;
 declare const deepEqual: (one: unknown, two: unknown) => boolean;
@@ -295,8 +295,8 @@ declare const _default: {
     };
     type: (val: any) => string;
     size: (val: any) => number;
-    omit: <T = unknown>(val: T, arr: CloneOmitType, deep?: DeepType) => T;
-    pick: <T_1 = unknown>(val: T_1, arr: ClonePickType, deep?: DeepType) => T_1;
+    omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
+    pick: <T_1 = unknown>(val: T_1, arr: FilterTypes | FilterType, deep?: DeepType) => T_1;
     equal: (one: unknown, two: unknown, opts?: DeepType | EqualOptionsType) => boolean;
     clone: <T_2 = unknown>(val: T_2, opts?: DeepType | CloneOptionsType) => T_2;
     assign: <T_3 = unknown>(val: T_3, ...rest: any[]) => T_3;
@@ -446,4 +446,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOmitType, type CloneOmitTypes, type CloneOptionsType, type ClonePickType, type ClonePickTypes, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };
+export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, size, toArray, toDate, toFiniteNumber, toFixed, toFunction, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };
