@@ -1,5 +1,6 @@
 # ignore eslint files
 
+.coverage
 .gitignore
 node_modules/*
 **/dist/*

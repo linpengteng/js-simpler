@@ -1,5 +1,4 @@
-import { type } from './*Generalize'
-import { isUndef } from './*Nullable'
+import { isUndef } from './~Nullable'
 import { isObject } from './-Object'
 import { isFunction } from './-Function'
 import { isFiniteNumber } from './-Number'
@@ -15,7 +14,7 @@ const debounce = (func: Function, wait: number, options: { leading?: boolean; tr
   let lastInvokeTime = 0
 
   if (!isFunction(func)) {
-    throw new TypeError('#<' + type(func) + '> is not a function')
+    throw new TypeError('#<func> is not a function')
   }
 
   if (!isObject(options)) {
@@ -153,7 +152,7 @@ const throttle = (func: Function, wait: number, options: { leading?: boolean; tr
   const trailing = !isObject(options) || options.trailing !== false
 
   if (!isFunction(func)) {
-    throw new TypeError('#<' + type(func) + '> is not a function')
+    throw new TypeError('#<func> is not a function')
   }
 
   return debounce(func, wait, {

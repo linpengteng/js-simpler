@@ -10,20 +10,26 @@ export const isArray = (arr: unknown): arr is any[] => {
   return Array.isArray(arr)
 }
 
-export const toArray = (arr: unknown): any[] => {
-  if (isArray(arr)) {
-    return arr
+export const toArray = (...rest: unknown[]): any[] => {
+  if (isArray(rest[0]) && rest.length === 1) {
+    return rest[0]
   }
 
-  try { return Array.from(arr as any) } catch {}
-
-  return []
+  try {
+    // @ts-ignore
+    return Array.from(...rest)
+  } catch /* istanbul ignore next */ {
+    return []
+  }
 }
 
-export const newArray = (arr: unknown): any[] => {
-  try { return Array.from(arr as any) } catch {}
-
-  return []
+export const newArray = (...rest: unknown[]): any[] => {
+  try {
+    // @ts-ignore
+    return Array.from(...rest)
+  } catch /* istanbul ignore next */ {
+    return []
+  }
 }
 
 

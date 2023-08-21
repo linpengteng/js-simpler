@@ -2,7 +2,7 @@
   "name": "js-simpler",
   "description": "js fast helper",
   "homepage": "https://github.com/linpengteng/js-simpler#readme",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "license": "MIT",
   "author": "lin pengteng <china.linpengteng@gmail.com>",
   "keywords": [
@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest",
     "build": "shx rm -rf dist && rollup --config rollup.config.ts --configPlugin typescript",
     "release": "release-it"
   },

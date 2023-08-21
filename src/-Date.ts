@@ -1,5 +1,4 @@
-import { type } from './*Generalize'
-import { isNullable } from './*Nullable'
+import { isNullable } from './~Nullable'
 import { isFiniteNumber } from './-Number'
 import { isNonEmptyString } from './-String'
 
@@ -9,11 +8,11 @@ export const isValidDate = (date: unknown): date is Date => {
 }
 
 export const isDate = (date: unknown): date is Date => {
-  return type(date) === 'Date'
+  return Object.prototype.toString.call(date) === '[object Date]'
 }
 
 export const toDate = (...rest: unknown[]): Date => {
-  if (rest.length) {
+  if (!rest.length) {
     return new Date()
   }
 
@@ -21,10 +20,6 @@ export const toDate = (...rest: unknown[]): Date => {
     return rest[0] as Date
   }
 
-  if (isFiniteNumber(rest[0])) {
-    return new Date(rest[0] as number)
-  }
-
   if (isNonEmptyString(rest[0])) {
     let i = 0 as number
     let year = '' as string | number
@@ -37,33 +32,34 @@ export const toDate = (...rest: unknown[]): Date => {
     for (const [index, number] of arr.entries()) {
       if (index === 0) {
         if (!year && /^\d{4}$/.test(number)) {
-          i++
+          i = index + 1
           year = number
           continue
         }
 
         if (/^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           month = +number - 1
         }
       }
 
+
       if (index === 1) {
-        if (!month && /^\d{1,2}$/.test(number)) {
-          i++
+        if (!month && month !== 0 && /^\d{1,2}$/.test(number)) {
+          i = index + 1
           month = +number - 1
           continue
         }
 
         if (/^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           date = number
         }
       }
 
       if (index === 2) {
         if (!date && /^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           date = number
         }
         break
@@ -89,7 +85,7 @@ export const toDate = (...rest: unknown[]): Date => {
     let seconds = '00'
     let milliseconds = '000'
 
-    const temp = arr.find(() => /^\d{1,2}((:\d{1,2})?(:\d{1,2}([.:]\d{1,3})?)?)?$/)
+    const temp = arr.find(time => /^\d{1,2}((:\d{1,2})?(:\d{1,2}([.:]\d{1,3})?)?)?$/.test(time))
     const list = temp?.split(/[:.]/) || []
 
     for (const [index, number] of list.entries()) {
@@ -103,23 +99,22 @@ export const toDate = (...rest: unknown[]): Date => {
 
       if (index === 2) {
         seconds = number
-        break
       }
 
       if (index === 3) {
         milliseconds = number
-        break
       }
     }
 
     return new Date(+year, +month, +date, +hour, +minute, +seconds, +milliseconds)
   }
 
-  return new Date(NaN)
+  // @ts-ignore
+  return new Date(...rest)
 }
 
 export const newDate = (...rest: unknown[]): Date => {
-  if (rest.length) {
+  if (!rest.length) {
     return new Date()
   }
 
@@ -127,10 +122,6 @@ export const newDate = (...rest: unknown[]): Date => {
     return new Date(+rest[0]!)
   }
 
-  if (isFiniteNumber(rest[0])) {
-    return new Date(rest[0] as number)
-  }
-
   if (isNonEmptyString(rest[0])) {
     let i = 0 as number
     let year = '' as string | number
@@ -143,33 +134,34 @@ export const newDate = (...rest: unknown[]): Date => {
     for (const [index, number] of arr.entries()) {
       if (index === 0) {
         if (!year && /^\d{4}$/.test(number)) {
-          i++
+          i = index + 1
           year = number
           continue
         }
 
         if (/^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           month = +number - 1
         }
       }
 
+
       if (index === 1) {
-        if (!month && /^\d{1,2}$/.test(number)) {
-          i++
+        if (!month && month !== 0 && /^\d{1,2}$/.test(number)) {
+          i = index + 1
           month = +number - 1
           continue
         }
 
         if (/^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           date = number
         }
       }
 
       if (index === 2) {
         if (!date && /^\d{1,2}$/.test(number)) {
-          i++
+          i = index + 1
           date = number
         }
         break
@@ -195,7 +187,7 @@ export const newDate = (...rest: unknown[]): Date => {
     let seconds = '00'
     let milliseconds = '000'
 
-    const temp = arr.find(() => /^\d{1,2}((:\d{1,2})?(:\d{1,2}([.:]\d{1,3})?)?)?$/)
+    const temp = arr.find(time => /^\d{1,2}((:\d{1,2})?(:\d{1,2}([.:]\d{1,3})?)?)?$/.test(time))
     const list = temp?.split(/[:.]/) || []
 
     for (const [index, number] of list.entries()) {
@@ -209,57 +201,54 @@ export const newDate = (...rest: unknown[]): Date => {
 
       if (index === 2) {
         seconds = number
-        break
       }
 
       if (index === 3) {
         milliseconds = number
-        break
       }
     }
 
     return new Date(+year, +month, +date, +hour, +minute, +seconds, +milliseconds)
   }
 
-  return new Date(NaN)
+  // @ts-ignore
+  return new Date(...rest)
 }
 
-export const showDate = (date: unknown, format?: string): string => {
-  date = !isDate(date)
-    ? toDate(date)
-    : date
+export const showDate = (time: unknown, format?: string): string => {
+  const date = !isDate(time)
+    ? toDate(time)
+    : time
 
-  format = isNullable(format)
+  const template = isNullable(format)
     ? 'YYYY-MM-DD HH:mm:ss'
     : format
 
-  if (isNonEmptyString(format) && isValidDate(date)) {
-    return format.replace(/YYYY|MM?|DD?|HH?|mm?|ss?|ii?i?/g, type => {
-      if (isValidDate(date)) {
-        switch (type) {
-          case 'YYYY': return String(date.getFullYear())
-          case 'yyyy': return String(date.getFullYear())
-          case 'MM': return String(date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1))
-          case 'M': return String(date.getMonth() + 1)
-          case 'DD': return String(date.getDate() > 9 ? date.getDate() : '0' + date.getMonth())
-          case 'dd': return String(date.getDate() > 9 ? date.getDate() : '0' + date.getMonth())
-          case 'D': return String(date.getDate())
-          case 'd': return String(date.getDate())
-          case 'HH': return String(date.getHours() > 9 ? date.getHours() : '0' + date.getHours())
-          case 'hh': return String(date.getHours() > 9 ? date.getHours() : '0' + date.getHours())
-          case 'H': return String(date.getHours())
-          case 'h': return String(date.getHours())
-          case 'mm': return String(date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes())
-          case 'm': return String(date.getMinutes())
-          case 'ss': return String(date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds())
-          case 's': return String(date.getSeconds())
-          case 'sss': return String(date.getMilliseconds() > 99 ? date.getMilliseconds() : date.getMilliseconds() > 9 ? '0' + date.getMilliseconds() : '00' + date.getMilliseconds())
-          case 'iii': return String(date.getMilliseconds() > 99 ? date.getMilliseconds() : date.getMilliseconds() > 9 ? '0' + date.getMilliseconds() : '00' + date.getMilliseconds())
-          case 'ii': return String(date.getMilliseconds() > 9 ? date.getMilliseconds() : '0' + date.getMilliseconds())
-          case 'i': return String(date.getMilliseconds())
-        }
+  if (isNonEmptyString(template) && isValidDate(date)) {
+    return template.replace(/YYYY|MM?|DD?|HH?|mm?|ss?s?|ii?i?/gi, type => {
+      switch (type) {
+        case 'YYYY': return String(date.getFullYear())
+        case 'yyyy': return String(date.getFullYear())
+        case 'MM': return String(date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1))
+        case 'M': return String(date.getMonth() + 1)
+        case 'DD': return String(date.getDate() > 9 ? date.getDate() : '0' + date.getMonth())
+        case 'dd': return String(date.getDate() > 9 ? date.getDate() : '0' + date.getMonth())
+        case 'D': return String(date.getDate())
+        case 'd': return String(date.getDate())
+        case 'HH': return String(date.getHours() > 9 ? date.getHours() : '0' + date.getHours())
+        case 'hh': return String(date.getHours() > 9 ? date.getHours() : '0' + date.getHours())
+        case 'H': return String(date.getHours())
+        case 'h': return String(date.getHours())
+        case 'mm': return String(date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes())
+        case 'm': return String(date.getMinutes())
+        case 'ss': return String(date.getSeconds() > 9 ? date.getSeconds() : '0' + date.getSeconds())
+        case 's': return String(date.getSeconds())
+        case 'sss': return String(date.getMilliseconds() > 99 ? date.getMilliseconds() : date.getMilliseconds() > 9 ? '0' + date.getMilliseconds() : '00' + date.getMilliseconds())
+        case 'iii': return String(date.getMilliseconds() > 99 ? date.getMilliseconds() : date.getMilliseconds() > 9 ? '0' + date.getMilliseconds() : '00' + date.getMilliseconds())
+        case 'ii': return String(date.getMilliseconds() > 9 ? date.getMilliseconds() : '0' + date.getMilliseconds())
+        case 'i': return String(date.getMilliseconds())
       }
-      return ''
+      return type
     })
   }
 

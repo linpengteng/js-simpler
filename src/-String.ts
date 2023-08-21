@@ -1,6 +1,3 @@
-import { type } from './*Generalize'
-
-
 export const isNonEmptyString = (str: unknown): str is string => {
   return isString(str) && !!str.trim()
 }
@@ -10,7 +7,7 @@ export const isEmptyString = (str: unknown): str is string => {
 }
 
 export const isString = (str: unknown): str is string => {
-  return type(str) === 'String'
+  return Object.prototype.toString.call(str) === '[object String]'
 }
 
 

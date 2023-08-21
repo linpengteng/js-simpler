@@ -1,4 +1,3 @@
-import { type } from './*Generalize'
 import { isObject } from './-Object'
 import { isArray } from './-Array'
 import { isMap } from './-Map'
@@ -13,10 +12,10 @@ export const isEmptySet = (set: unknown): set is Set<unknown> => {
 }
 
 export const isSet = (set: unknown): set is Set<unknown> => {
-  return type(set) === 'Set'
+  return Object.prototype.toString.call(set) === '[object Set]'
 }
 
-export const toSet = (set: unknown): Set<unknown> => {
+export const toSet = (set?: unknown): Set<unknown> => {
   if (isSet(set)) {
     return set
   }
@@ -36,7 +35,7 @@ export const toSet = (set: unknown): Set<unknown> => {
   return new Set()
 }
 
-export const newSet = (set: unknown): Set<unknown> => {
+export const newSet = (set?: unknown): Set<unknown> => {
   if (isObject(set)) {
     return new Set(Object.entries(set))
   }
@@ -56,9 +55,11 @@ export const newSet = (set: unknown): Set<unknown> => {
   return new Set()
 }
 
+
 export default {
   isNonEmptySet,
   isEmptySet,
   isSet,
-  toSet
+  toSet,
+  newSet
 }

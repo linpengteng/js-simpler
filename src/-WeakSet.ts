@@ -1,4 +1,3 @@
-import { type } from './*Generalize'
 import { isFunction } from './-Function'
 import { isPromise } from './-Promise'
 import { isRegExp } from './-RegExp'
@@ -9,11 +8,11 @@ import { isMap } from './-Map'
 import { isSet } from './-Set'
 
 
-export const isWeakSet = (set: unknown): set is WeakSet<object> => {
-  return type(set) === 'WeakSet'
+export const isWeakSet = (set?: unknown): set is WeakSet<object> => {
+  return Object.prototype.toString.call(set) === '[object WeakSet]'
 }
 
-export const toWeakSet = (set: unknown): WeakSet<object> => {
+export const toWeakSet = (set?: unknown): WeakSet<object> => {
   if (isWeakSet(set)) {
     return set
   }
@@ -59,7 +58,7 @@ export const toWeakSet = (set: unknown): WeakSet<object> => {
   return new WeakSet()
 }
 
-export const newWeakSet = (set: unknown): WeakSet<object> => {
+export const newWeakSet = (set?: unknown): WeakSet<object> => {
   if (isObject(set)) {
     return new WeakSet(Object.entries(set))
   }

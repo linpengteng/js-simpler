@@ -69,9 +69,6 @@ export const Tween = {
   linear(t: number) {
     return t
   },
-  scroll(t: number) {
-    return 2 * t - t * t
-  },
   quadIn(t: number) {
     return Core.getPowIn(2)(t)
   },

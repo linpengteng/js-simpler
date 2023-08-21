@@ -1,6 +1,4 @@
-import { type } from './*Generalize'
 import { isObject } from './-Object'
-import { isArray } from './-Array'
 import { isSet } from './-Set'
 
 
@@ -13,36 +11,33 @@ export const isEmptyMap = (map: unknown): map is Map<unknown, unknown> => {
 }
 
 export const isMap = (map: unknown): map is Map<unknown, unknown> => {
-  return type(map) === 'Map'
+  return Object.prototype.toString.call(map) === '[object Map]'
 }
 
-export const toMap = (map: unknown): Map<unknown, unknown> => {
+export const toMap = (map?: unknown): Map<unknown, unknown> => {
+  if (isObject(map)) {
+    return new Map(Object.entries(map))
+  }
+
   if (isMap(map)) {
     return map
   }
 
-  if (isObject(map)) {
-    return new Map(Object.entries(map))
-  }
-
-  if (isArray(map)) {
-    return new Map(map.filter(arr => isArray(arr) && arr.length === 2))
-  }
-
   if (isSet(map)) {
-    return new Map(map.entries())
+    return new Map(Array.from(map.values()).entries())
   }
 
-  return new Map()
+  try {
+    // @ts-ignore
+    return new Map(map)
+  } catch /* istanbul ignore next */ {
+    return new Map()
+  }
 }
 
-export const newMap = (map: unknown): Map<unknown, unknown> => {
+export const newMap = (map?: unknown): Map<unknown, unknown> => {
   if (isObject(map)) {
     return new Map(Object.entries(map))
-  }
-
-  if (isArray(map)) {
-    return new Map(map.filter(arr => isArray(arr) && arr.length === 2))
   }
 
   if (isMap(map)) {
@@ -50,10 +45,15 @@ export const newMap = (map: unknown): Map<unknown, unknown> => {
   }
 
   if (isSet(map)) {
-    return new Map(map.entries())
+    return new Map(Array.from(map.values()).entries())
   }
 
-  return new Map()
+  try {
+    // @ts-ignore
+    return new Map(map)
+  } catch /* istanbul ignore next */ {
+    return new Map()
+  }
 }
 
 export default {

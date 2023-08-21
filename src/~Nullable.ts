@@ -1,12 +1,9 @@
-import { type } from './*Generalize'
-
-
 export const isNull = (val: unknown): val is null => {
-  return type(val) === 'Null'
+  return Object.prototype.toString.call(val) === '[object Null]'
 }
 
 export const isUndef = (val: unknown): val is undefined => {
-  return type(val) === 'Undefined'
+  return Object.prototype.toString.call(val) === '[object Undefined]'
 }
 
 export const isNullable = (val: unknown): val is null | undefined => {

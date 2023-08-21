@@ -1,4 +1,3 @@
-import { type } from './*Generalize'
 import { isArray } from './-Array'
 import { isMap } from './-Map'
 import { isSet } from './-Set'
@@ -13,28 +12,44 @@ export const isEmptyObject = (obj: unknown): obj is Record<string, unknown> => {
 }
 
 export const isObject = (obj: unknown): obj is Record<string, unknown> => {
-  return type(obj) === 'Object'
+  return Object.prototype.toString.call(obj) === '[object Object]'
 }
 
-export const toObject = (obj: unknown): Record<string, unknown> => {
+export const toObject = (obj?: unknown): Record<string, unknown> => {
   if (isObject(obj)) {
     return obj
   }
 
-  if (isArray(obj) || isMap(obj) || isSet(obj)) {
+  if (isArray(obj)) {
     return Object.fromEntries(obj.entries())
+  }
+
+  if (isMap(obj)) {
+    return Object.fromEntries(obj.entries())
+  }
+
+  if (isSet(obj)) {
+    return Object.fromEntries(Array.from(obj.values()).entries())
   }
 
   return {}
 }
 
-export const newObject = (obj: unknown): Record<string, unknown> => {
+export const newObject = (obj?: unknown): Record<string, unknown> => {
   if (isObject(obj)) {
     return { ...obj }
   }
 
-  if (isArray(obj) || isMap(obj) || isSet(obj)) {
+  if (isArray(obj)) {
     return Object.fromEntries(obj.entries())
+  }
+
+  if (isMap(obj)) {
+    return Object.fromEntries(obj.entries())
+  }
+
+  if (isSet(obj)) {
+    return Object.fromEntries(Array.from(obj.values()).entries())
   }
 
   return {}

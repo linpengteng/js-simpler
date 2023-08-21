@@ -13,12 +13,12 @@ import _Promise from './-Promise'
 import _WeakSet from './-WeakSet'
 import _WeakMap from './-WeakMap'
 import _Function from './-Function'
-import _Currylize from './*Currylize'
-import _Generalize from './*Generalize'
-import _Animation from './*Animation'
-import _Formater from './*Formater'
-import _Nullable from './*Nullable'
-import { Tween } from './*Tween'
+import _Currylize from './~Currylize'
+import _Generalize from './~Generalize'
+import _Animation from './~Animation'
+import _Formater from './~Formater'
+import _Nullable from './~Nullable'
+import { Tween } from './~Tween'
 
 
 export default {

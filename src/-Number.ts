@@ -1,8 +1,5 @@
-import { type } from './*Generalize'
-
-
 export const isNumber = (num: unknown): num is number => {
-  return type(num) === 'Number'
+  return Object.prototype.toString.call(num) === '[object Number]'
 }
 
 export const isInteger = (num: unknown): num is number => {
@@ -17,7 +14,7 @@ export const isFiniteNumber = (num: unknown): num is number => {
   return isNumber(num) && Number.isFinite(num)
 }
 
-export const toFiniteNumber = (num: unknown, lie = NaN): number => {
+export const toFiniteNumber = (num?: unknown, lie = NaN): number => {
   if (num === Infinity) {
     return Number.MAX_SAFE_INTEGER
   }
@@ -33,13 +30,53 @@ export const toFiniteNumber = (num: unknown, lie = NaN): number => {
   return 0
 }
 
-export const toNumber = (num: unknown, lie = NaN): number => {
+export const toDecimal = (num?: unknown, lie = NaN): number => {
+  if (num === Infinity) {
+    return Number.MAX_SAFE_INTEGER
+  }
+
+  if (num === -Infinity) {
+    return -Number.MAX_SAFE_INTEGER
+  }
+
+  if (isFiniteNumber(+num!)) {
+    return isFiniteNumber(lie) && lie >= 0 ? +toFixed(+num!, lie) : +num!
+  }
+
+  return 0
+}
+
+export const toInteger = (num?: unknown, _?: number): number => {
+  if (num === Infinity) {
+    return Number.MAX_SAFE_INTEGER
+  }
+
+  if (num === -Infinity) {
+    return -Number.MAX_SAFE_INTEGER
+  }
+
+  try {
+    return isFiniteNumber(+num!) && parseInt(String(num)) || 0
+  } catch /* istanbul ignore next */ {
+    return 0
+  }
+}
+
+export const toNumber = (num?: unknown, lie = NaN): number => {
   return isFiniteNumber(+num!)
     ? isFiniteNumber(lie) && lie >= 0 ? +toFixed(+num!, lie) : +num!
     : +num!
 }
 
-export const toFixed = (num: unknown, lie = NaN): string => {
+export const toFixed = (num?: unknown, lie = NaN): string => {
+  if (num === -Infinity) {
+    return '-Infinity'
+  }
+
+  if (num === Infinity) {
+    return 'Infinity'
+  }
+
   num = isFiniteNumber(num) ? num : +num!
   lie = isFiniteNumber(lie) ? lie : NaN
   lie = lie >= 0 ? lie : NaN
@@ -50,7 +87,7 @@ export const toFixed = (num: unknown, lie = NaN): string => {
     let decimal = false
 
     number = isFiniteNumber(lie) ? Math.round(Math.pow(10, lie) * +num) / Math.pow(10, lie) : +num
-    string = isFiniteNumber(number) ? String(number) : String(number)
+    string = String(number)
     decimal = string.indexOf('.') !== -1
 
     if (decimal && lie > 0) {
@@ -74,6 +111,8 @@ export default {
   isDecimal,
   isFiniteNumber,
   toFiniteNumber,
+  toDecimal,
+  toInteger,
   toNumber,
   toFixed
 }

@@ -1,4 +1,3 @@
-import { type } from './*Generalize'
 import { isFunction } from './-Function'
 import { isPromise } from './-Promise'
 import { isRegExp } from './-RegExp'
@@ -10,10 +9,10 @@ import { isSet } from './-Set'
 
 
 export const isWeakMap = (map: unknown): map is WeakMap<object, unknown> => {
-  return type(map) === 'WeakMap'
+  return Object.prototype.toString.call(map) === '[object WeakMap]'
 }
 
-export const toWeakMap = (map: unknown): WeakMap<object, unknown> => {
+export const toWeakMap = (map?: unknown): WeakMap<object, unknown> => {
   if (isWeakMap(map)) {
     return map
   }
@@ -51,7 +50,7 @@ export const toWeakMap = (map: unknown): WeakMap<object, unknown> => {
   return new WeakMap()
 }
 
-export const newWeakMap = (map: unknown): WeakMap<any, unknown> => {
+export const newWeakMap = (map?: unknown): WeakMap<any, unknown> => {
   if (isArray(map)) {
     return new WeakMap(
       (map as Array<[object, unknown]>).filter(arr => isArray(arr) && arr.length === 2).filter(arr => (

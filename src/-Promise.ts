@@ -1,15 +1,18 @@
 /* eslint-disable no-prototype-builtins */
 
-import { type } from './*Generalize'
 import { isFiniteNumber } from './-Number'
 import { isFunction } from './-Function'
 
 
 export const isPromise = (val: unknown): val is Promise<unknown> => {
-  return type(val) === 'Promise'
+  return Object.prototype.toString.call(val) === '[object Promise]'
 }
 
 export const toPromise = <T = unknown>(wait?: Function | number | unknown): Promise<T> => {
+  if (isPromise(wait)) {
+    return wait as Promise<T>
+  }
+
   if (isFunction(wait)) {
     return Promise.resolve<T>(wait())
   }
