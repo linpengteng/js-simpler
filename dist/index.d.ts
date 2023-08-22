@@ -222,11 +222,11 @@ declare const isAsyncFunction: (func: unknown) => func is Function;
 declare const isFunction: (func: unknown) => func is Function;
 declare const toFunction: (...rest: unknown[]) => Function;
 
-declare const lowerCase: (string: string) => string;
-declare const upperCase: (string: string) => string;
-declare const camelCase: (string: string, first?: boolean) => string;
-declare const hyphenate: (string: string, first?: boolean) => string;
-declare const underline: (string: string, first?: boolean) => string;
+declare const lowerCase: <T = any>(string: T) => T;
+declare const upperCase: <T = any>(string: T) => T;
+declare const camelCase: <T = any>(string: T, first?: boolean) => T;
+declare const hyphenate: <T = any>(string: T, first?: boolean) => T;
+declare const underline: <T = any>(string: T, first?: boolean) => T;
 
 declare const isNull: (val: unknown) => val is null;
 declare const isUndef: (val: unknown) => val is undefined;
@@ -267,11 +267,11 @@ declare const Tween: {
 };
 
 declare const _default: {
-    lowerCase: (string: string) => string;
-    upperCase: (string: string) => string;
-    camelCase: (string: string, first?: boolean) => string;
-    hyphenate: (string: string, first?: boolean) => string;
-    underline: (string: string, first?: boolean) => string;
+    lowerCase: <T = any>(string: T) => T;
+    upperCase: <T_1 = any>(string: T_1) => T_1;
+    camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
+    hyphenate: <T_3 = any>(string: T_3, first?: boolean) => T_3;
+    underline: <T_4 = any>(string: T_4, first?: boolean) => T_4;
     isNull: (val: unknown) => val is null;
     isUndef: (val: unknown) => val is undefined;
     isNullable: (val: unknown) => val is null | undefined;

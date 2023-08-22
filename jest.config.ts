@@ -18,7 +18,7 @@ export default {
       statements: 95
     }
   },
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/~Animation.ts', '!src/**/~Currylize.ts', '!src/**/~Formater.ts', '!src/**/~Generalize.ts', '!src/**/~Tween.ts', '!src/**/browser.ts', '!src/**/simpler.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/~Animation.ts', '!src/**/~Generalize.ts', '!src/**/~Tween.ts', '!src/**/browser.ts', '!src/**/simpler.ts'],
   coverageReporters: ['html', 'json', 'text'],
   coverageDirectory: '.coverage',
   coverageProvider: 'babel',

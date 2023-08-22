@@ -1,3 +1,7 @@
+import { isFiniteNumber } from './-Number'
+import { isFunction } from './-Function'
+
+
 export interface Curry {
   <T1, R>(func: (this: any, t1: T1) => R, length?: number): CurryFn1<T1, R>;
   <T1, T2, R>(func: (this: any, t1: T1, t2: T2) => R, length?: number): CurryFn2<T1, T2, R>;
@@ -85,35 +89,36 @@ export interface CurryFn5<T1, T2, T3, T4, T5, R> {
 }
 
 
-export const curry: Curry = function(this: any, fn: Function, length = fn.length) {
+export const curry: Curry = function(this: any, fn: Function, length?: number) {
+  if (!isFunction(fn)) {
+    throw new TypeError('#<fn> is not a function')
+  }
+
   const currying = (fn: Function, length: number, holder: any, params: any[], holders: any[]) => {
     const wrapper = (...rest: any[]) => {
       const _params = params.slice()
       const _holders = holders.slice()
 
       rest.forEach(arg => {
-        if (arg !== holder && !holders.length) {
+        if (!holders.length && arg === holder) {
+          _params.push(arg)
+          _holders.push(_params.length - 1)
+          return
+        }
+
+        if (!holders.length && arg !== holder) {
           _params.push(arg)
           return
         }
 
-        if (arg !== holder && holders.length) {
+        if (holders.length && arg !== holder) {
           const index = holders.shift()
           _holders.splice(_holders.indexOf(index), 1)
           _params[index] = arg
           return
         }
 
-        if (arg === holder && !holders.length) {
-          _params.push(arg)
-          _holders.push(_params.length - 1)
-          return
-        }
-
-        if (arg === holder && holders.length) {
-          holders.shift()
-          return
-        }
+        holders.shift()
       })
 
       const isPass = (
@@ -127,7 +132,7 @@ export const curry: Curry = function(this: any, fn: Function, length = fn.length
     return wrapper
   }
 
-  return currying(fn, length, curry, [], [])
+  return currying(fn, isFiniteNumber(length) ? length : fn.length, curry, [], [])
 }
 
 
