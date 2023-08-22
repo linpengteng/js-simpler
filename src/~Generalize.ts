@@ -1,10 +1,10 @@
+import { isNonEmptyString, isString } from './-String'
 import { isFiniteNumber } from './-Number'
 import { isWeakMap } from './-WeakMap'
-import { isBoolean } from './-Boolean'
 import { isUndef } from './~Nullable'
 import { isRegExp } from './-RegExp'
-import { isString } from './-String'
 import { isObject } from './-Object'
+import { isSymbol } from './-Symbol'
 import { isArray } from './-Array'
 import { isDate } from './-Date'
 import { isSet } from './-Set'
@@ -18,40 +18,14 @@ export type CloneOptionsType = { omit?: FilterTypes; pick?: FilterTypes; copy?: 
 export type EqualOptionsType = { strict?: FilterTypes; include?:FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
 
 
-export const type = (val: any) => {
+export const type = (val: any, type?: string): string => {
+  try {
+    if (isNonEmptyString(type)) {
+      val[Symbol.toStringTag] = type
+    }
+  } catch /* istanbul ignore next */ {}
+
   return Object.prototype.toString.call(val).replace(/^\[[^\s\]]+\s*([^\]]+)]$/, '$1')
-}
-
-export const size = (val: any) => {
-  if (isDate(val)) {
-    return +val || 0
-  }
-
-  if (isString(val)) {
-    return [...val.trim()].length
-  }
-
-  if (isArray(val)) {
-    return val.length
-  }
-
-  if (isObject(val)) {
-    return Object.keys(val).length
-  }
-
-  if (isBoolean(val)) {
-    return val === true ? 1 : 0
-  }
-
-  if (isFiniteNumber(val)) {
-    return val || 0
-  }
-
-  if (isMap(val) || isSet(val)) {
-    return val.size
-  }
-
-  return 0
 }
 
 export const omit = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
@@ -73,6 +47,10 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
 
   if (type(one) !== type(two)) {
     return false
+  }
+
+  if (isSymbol(one) && isSymbol(two)) {
+    return !isUndef(Symbol.keyFor(one)) && Symbol.keyFor(one) === Symbol.keyFor(two)
   }
 
   if (isArray(one) && isArray(two)) {
@@ -347,7 +325,6 @@ export const deepAssign = <T = unknown>(val: T, ...rest: any[]): T => {
 
 export default {
   type,
-  size,
   omit,
   pick,
   equal,

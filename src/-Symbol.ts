@@ -7,32 +7,24 @@ export const isSymbol = (val: unknown): val is symbol => {
 }
 
 export const toSymbol = (val?: unknown): symbol => {
-  try {
-    return !isSymbol(val)
-      ? Symbol(val as any)
-      : val
-  } catch /* istanbul ignore next */ {
-    return Symbol()
-  }
+  return !isSymbol(val)
+    ? isString(val) ? Symbol(val) : Symbol()
+    : val
 }
 
 export const newSymbol = (val?: unknown): symbol => {
-  try {
-    return Symbol(val as any)
-  } catch /* istanbul ignore next */ {
-    return Symbol()
-  }
+  return isString(val) ? Symbol(val) : Symbol()
 }
 
 export const toSymbolFor = (val?: unknown): symbol => {
   return !isSymbol(val) || isUndef(Symbol.keyFor(val))
-    ? Symbol.for(isString(val) ? val : '')
+    ? Symbol.for(isString(val) ? val : 'undefined')
     : val
 }
 
 export const newSymbolFor = (val?: unknown): symbol => {
   return !isSymbol(val) || isUndef(Symbol.keyFor(val))
-    ? Symbol.for(isString(val) ? val : '')
+    ? Symbol.for(isString(val) ? val : 'undefined')
     : val
 }
 

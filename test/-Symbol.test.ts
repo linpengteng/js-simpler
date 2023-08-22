@@ -74,7 +74,7 @@ describe('Test Symbol', () => {
   })
 
   test('Test toSymbolFor when accept undefined', () => {
-    expect(js.toSymbolFor(undefined)).toBe(Symbol.for(''))
+    expect(js.toSymbolFor(undefined)).toBe(Symbol.for('undefined'))
   })
 
   test('Test toSymbolFor when accept "undefined"', () => {
@@ -100,7 +100,7 @@ describe('Test Symbol', () => {
   })
 
   test('Test newSymbolFor when accept undefined', () => {
-    expect(js.newSymbolFor(undefined)).toBe(Symbol.for(''))
+    expect(js.newSymbolFor(undefined)).toBe(Symbol.for('undefined'))
   })
 
   test('Test newSymbolFor when accept "undefined"', () => {
