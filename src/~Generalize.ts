@@ -60,7 +60,7 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     for (const key of Object.keys(one)) {
       const val1 = one[key]
       const val2 = two[key]
-      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 0
       const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
@@ -102,7 +102,7 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     for (const key of one.keys()) {
       const val1 = one[key]
       const val2 = two[key]
-      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 0
       const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
@@ -212,12 +212,12 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
   }
 
   if (isObject(val)) {
-    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return level >= 1 ? cloning(val, level) : val
   }
 
   if (isArray(val)) {
-    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return level >= 1 ? cloning(val, level) : val
   }
 
@@ -227,13 +227,13 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
 
   if (isMap(val)) {
     const maps = Array.from(val.entries()) as any
-    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return new Map(cloning(maps, level) as any) as T
   }
 
   if (isSet(val)) {
     const sets = Array.from(val.values()) as any
-    const level = deep === true ? Infinity : isFiniteNumber(deep) ? deep : 1
+    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return new Set(cloning(sets, level) as any) as T
   }
 
@@ -244,7 +244,7 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
   const empty = {}
   const cache = new WeakMap()
   const state = rest.slice(-1)[0]
-  const level = state === true ? Infinity : isFiniteNumber(state) ? state : 1
+  const level = state === true || state === Infinity ? Infinity : isFiniteNumber(state) ? state : 1
 
   const taking = (val: any) => {
     return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
