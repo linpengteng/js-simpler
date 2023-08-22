@@ -49,50 +49,16 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     return false
   }
 
-  if (isSymbol(one) && isSymbol(two)) {
-    return !isUndef(Symbol.keyFor(one)) && Symbol.keyFor(one) === Symbol.keyFor(two)
+  if (isFiniteNumber(one) && isFiniteNumber(two)) {
+    return Math.abs(one - two) < Number.EPSILON
   }
 
-  if (isArray(one) && isArray(two)) {
-    if (one.length !== two.length) {
-      return false
-    }
+  if (isRegExp(one) && isRegExp(two)) {
+    return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
+  }
 
-    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
-
-    for (const key of one.keys()) {
-      const val1 = one[key]
-      const val2 = two[key]
-      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
-      const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
-      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
-      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
-
-      if (excluded || !included) {
-        continue
-      }
-
-      if (val1 === val2) {
-        continue
-      }
-
-      if (stricted) {
-        return false
-      }
-
-      const reuslt = level >= 1
-        ? equal(val1, val2, level - 1)
-        : false
-
-      if (!reuslt) {
-        return false
-      }
-    }
-
-    return true
+  if (isSymbol(one) && isSymbol(two)) {
+    return !isUndef(Symbol.keyFor(one)) && Symbol.keyFor(one) === Symbol.keyFor(two)
   }
 
   if (isObject(one) && isObject(two)) {
@@ -137,8 +103,46 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     return true
   }
 
-  if (isRegExp(one) && isRegExp(two)) {
-    return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
+  if (isArray(one) && isArray(two)) {
+    if (one.length !== two.length) {
+      return false
+    }
+
+    const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
+
+    for (const key of one.keys()) {
+      const val1 = one[key]
+      const val2 = two[key]
+      const level = deep === true ? Infinity : +deep >= 1 ? +deep : 1
+      const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+
+      if (excluded || !included) {
+        continue
+      }
+
+      if (val1 === val2) {
+        continue
+      }
+
+      if (stricted) {
+        return false
+      }
+
+      const reuslt = level >= 1
+        ? equal(val1, val2, level - 1)
+        : false
+
+      if (!reuslt) {
+        return false
+      }
+    }
+
+    return true
   }
 
   if (isDate(one) && isDate(two)) {
