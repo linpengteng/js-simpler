@@ -1,10 +1,10 @@
-import { isNonEmptyString, isString } from './-String'
 import { isFiniteNumber } from './-Number'
 import { isWeakMap } from './-WeakMap'
 import { isUndef } from './~Nullable'
 import { isRegExp } from './-RegExp'
 import { isObject } from './-Object'
 import { isSymbol } from './-Symbol'
+import { isString } from './-String'
 import { isArray } from './-Array'
 import { isDate } from './-Date'
 import { isSet } from './-Set'
@@ -17,16 +17,6 @@ export type FilterTypes = Array<string | number | RegExp>
 export type CloneOptionsType = { omit?: FilterTypes; pick?: FilterTypes; copy?: FilterTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
 export type EqualOptionsType = { strict?: FilterTypes; include?:FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
 
-
-export const type = (val: any, type?: string): string => {
-  try {
-    if (isNonEmptyString(type)) {
-      val[Symbol.toStringTag] = type
-    }
-  } catch /* istanbul ignore next */ {}
-
-  return Object.prototype.toString.call(val).replace(/^\[[^\s\]]+\s*([^\]]+)]$/, '$1')
-}
 
 export const omit = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
   return clone(val, { omit: isArray(arr) ? arr : [arr], deep })
@@ -43,10 +33,6 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
 
   if (Object.is(one, two)) {
     return true
-  }
-
-  if (type(one) !== type(two)) {
-    return false
   }
 
   if (isFiniteNumber(one) && isFiniteNumber(two)) {
@@ -255,6 +241,7 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
 }
 
 export const assign = <T = unknown>(val: T, ...rest: any[]) => {
+  const empty = {}
   const cache = new WeakMap()
   const state = rest.slice(-1)[0]
   const level = state === true ? Infinity : isFiniteNumber(state) ? state : 1
@@ -293,7 +280,7 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
         cache.set(source, clone(source, { deep: true, cache }))
       }
 
-      if (type(refly[key]) !== type(source)) {
+      if (empty.toString.call(refly[key]) !== empty.toString.call(source)) {
         refly[key] = cache.get(source)
         continue
       }
@@ -304,7 +291,7 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
 
   if (isObject(val) || isArray(val) || isMap(val) || isSet(val)) {
     for (const obj of rest) {
-      if (type(val) !== type(obj)) {
+      if (empty.toString.call(val) !== empty.toString.call(obj)) {
         break
       }
       merging(val, obj, level)
@@ -314,27 +301,26 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
   return val
 }
 
-export const deepClone = <T = unknown>(val: T): T => {
-  return clone<T>(val, { deep: true, cache: new WeakMap() })
-}
-
-export const deepEqual = (one: unknown, two: unknown): boolean => {
-  return equal(one, two, true)
-}
-
 export const deepAssign = <T = unknown>(val: T, ...rest: any[]): T => {
   return assign<T>(val, ...rest, true)
 }
 
+export const deepClone = <T = unknown>(val: T, opts: CloneOptionsType = {}): T => {
+  return clone<T>(val, { ...opts, deep: true })
+}
+
+export const deepEqual = (one: unknown, two: unknown, opts: EqualOptionsType = {}): boolean => {
+  return equal(one, two, { ...opts, deep: true })
+}
+
 
 export default {
-  type,
   omit,
   pick,
   equal,
   clone,
   assign,
+  deepAssign,
   deepClone,
-  deepEqual,
-  deepAssign
+  deepEqual
 }

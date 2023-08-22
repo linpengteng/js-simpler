@@ -96,16 +96,14 @@ type EqualOptionsType = {
     exclude?: FilterTypes;
     deep?: DeepType;
 };
-declare const type: (val: any) => string;
-declare const size: (val: any) => number;
 declare const omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
 declare const pick: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
 declare const equal: (one: unknown, two: unknown, opts?: EqualOptionsType | DeepType) => boolean;
 declare const clone: <T = unknown>(val: T, opts?: CloneOptionsType | DeepType) => T;
 declare const assign: <T = unknown>(val: T, ...rest: any[]) => T;
-declare const deepClone: <T = unknown>(val: T) => T;
-declare const deepEqual: (one: unknown, two: unknown) => boolean;
 declare const deepAssign: <T = unknown>(val: T, ...rest: any[]) => T;
+declare const deepClone: <T = unknown>(val: T, opts?: CloneOptionsType) => T;
+declare const deepEqual: (one: unknown, two: unknown, opts?: EqualOptionsType) => boolean;
 
 declare const isNonEmptySet: (set: unknown) => set is Set<unknown>;
 declare const isEmptySet: (set: unknown) => set is Set<unknown>;
@@ -294,16 +292,14 @@ declare const _default: {
         cancel: () => void;
         flush: () => any;
     };
-    type: (val: any) => string;
-    size: (val: any) => number;
     omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
     pick: <T_1 = unknown>(val: T_1, arr: FilterTypes | FilterType, deep?: DeepType) => T_1;
     equal: (one: unknown, two: unknown, opts?: DeepType | EqualOptionsType) => boolean;
     clone: <T_2 = unknown>(val: T_2, opts?: DeepType | CloneOptionsType) => T_2;
     assign: <T_3 = unknown>(val: T_3, ...rest: any[]) => T_3;
-    deepClone: <T_4 = unknown>(val: T_4) => T_4;
-    deepEqual: (one: unknown, two: unknown) => boolean;
-    deepAssign: <T_5 = unknown>(val: T_5, ...rest: any[]) => T_5;
+    deepAssign: <T_4 = unknown>(val: T_4, ...rest: any[]) => T_4;
+    deepClone: <T_5 = unknown>(val: T_5, opts?: CloneOptionsType) => T_5;
+    deepEqual: (one: unknown, two: unknown, opts?: EqualOptionsType) => boolean;
     curry: Curry;
     isGeneratorFunction: (func: unknown) => func is Function;
     isGeneralFunction: (func: unknown) => func is Function;
@@ -449,4 +445,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, size, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, type, underline, upperCase, yesterday };
+export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underline, upperCase, yesterday };
