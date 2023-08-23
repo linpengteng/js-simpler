@@ -225,8 +225,8 @@ declare const toFunction: (...rest: unknown[]) => Function;
 declare const lowerCase: <T = any>(string: T) => T;
 declare const upperCase: <T = any>(string: T) => T;
 declare const camelCase: <T = any>(string: T, first?: boolean) => T;
-declare const hyphenate: <T = any>(string: T, first?: boolean) => T;
-declare const underline: <T = any>(string: T, first?: boolean) => T;
+declare const underCase: <T = any>(string: T, first?: boolean) => T;
+declare const hyphenCase: <T = any>(string: T, first?: boolean) => T;
 
 declare const isNull: (val: unknown) => val is null;
 declare const isUndef: (val: unknown) => val is undefined;
@@ -270,8 +270,8 @@ declare const _default: {
     lowerCase: <T = any>(string: T) => T;
     upperCase: <T_1 = any>(string: T_1) => T_1;
     camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
-    hyphenate: <T_3 = any>(string: T_3, first?: boolean) => T_3;
-    underline: <T_4 = any>(string: T_4, first?: boolean) => T_4;
+    underCase: <T_3 = any>(string: T_3, first?: boolean) => T_3;
+    hyphenCase: <T_4 = any>(string: T_4, first?: boolean) => T_4;
     isNull: (val: unknown) => val is null;
     isUndef: (val: unknown) => val is undefined;
     isNullable: (val: unknown) => val is null | undefined;
@@ -445,4 +445,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenate, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underline, upperCase, yesterday };
+export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, upperCase, yesterday };

@@ -21,7 +21,7 @@ const debounce = (func: Function, wait: number, options: { leading?: boolean; tr
     options = {}
   }
 
-  wait = toFiniteNumber(wait)
+  wait = Math.max(toFiniteNumber(wait), 0)
 
   const leading = options.leading === true
   const trailing = options.trailing !== false

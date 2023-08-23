@@ -1,5 +1,5 @@
-import { isFiniteNumber } from './-Number'
 import { isFunction } from './-Function'
+import { isInteger } from './-Number'
 
 
 export interface Curry {
@@ -132,7 +132,7 @@ export const curry: Curry = function(this: any, fn: Function, length?: number) {
     return wrapper
   }
 
-  return currying(fn, isFiniteNumber(length) ? length : fn.length, curry, [], [])
+  return currying(fn, isInteger(length) && length >= 0 ? length : fn.length, curry, [], [])
 }
 
 

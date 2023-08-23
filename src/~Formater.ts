@@ -17,19 +17,19 @@ export const camelCase = <T = any>(string: T, first = false): T => {
   ) as T
 }
 
-export const hyphenate = <T = any>(string: T, first = false): T => {
-  return (
-    first === true
-      ? isNonEmptyString(string) ? string.replace(/([A-Z])/g, '-$1').replace(/([_-])([a-zA-Z])/g, '-$2').toLowerCase().replace(/^[_-]+/, '') : string
-      : isNonEmptyString(string) ? string.replace(/([A-Z])/g, '-$1').replace(/([_-])([a-zA-Z])/g, '-$2').toLowerCase() : string
-  ) as T
-}
-
-export const underline = <T = any>(string: T, first = false): T => {
+export const underCase = <T = any>(string: T, first = false): T => {
   return (
     first === true
       ? isNonEmptyString(string) ? string.replace(/([A-Z])/g, '_$1').replace(/([_-])([a-zA-Z])/g, '_$2').toLowerCase().replace(/^[_-]+/, '') : string
       : isNonEmptyString(string) ? string.replace(/([A-Z])/g, '_$1').replace(/([_-])([a-zA-Z])/g, '_$2').toLowerCase() : string
+  ) as T
+}
+
+export const hyphenCase = <T = any>(string: T, first = false): T => {
+  return (
+    first === true
+      ? isNonEmptyString(string) ? string.replace(/([A-Z])/g, '-$1').replace(/([_-])([a-zA-Z])/g, '-$2').toLowerCase().replace(/^[_-]+/, '') : string
+      : isNonEmptyString(string) ? string.replace(/([A-Z])/g, '-$1').replace(/([_-])([a-zA-Z])/g, '-$2').toLowerCase() : string
   ) as T
 }
 
@@ -38,6 +38,6 @@ export default {
   lowerCase,
   upperCase,
   camelCase,
-  hyphenate,
-  underline
+  underCase,
+  hyphenCase
 }

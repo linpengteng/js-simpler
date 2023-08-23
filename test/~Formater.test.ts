@@ -63,73 +63,73 @@ describe('Test Formater', () => {
 
 
   /**
-   * Test hyphenate
+   * Test underCase
    */
-  test('Test hyphenate when accept undefined', () => {
-    expect(js.hyphenate(undefined)).toBe(undefined)
+  test('Test underCase when accept undefined', () => {
+    expect(js.underCase(undefined)).toBe(undefined)
   })
 
-  test('Test hyphenate when accept undefined, true', () => {
-    expect(js.hyphenate(undefined, true)).toBe(undefined)
+  test('Test underCase when accept undefined, true', () => {
+    expect(js.underCase(undefined, true)).toBe(undefined)
   })
 
-  test('Test hyphenate when accept "TextContent"', () => {
-    expect(js.hyphenate('TextContent')).toBe('-text-content')
+  test('Test underCase when accept "TextContent"', () => {
+    expect(js.underCase('TextContent')).toBe('_text_content')
   })
 
-  test('Test hyphenate when accept "TextContent", true', () => {
-    expect(js.hyphenate('TextContent', true)).toBe('text-content')
+  test('Test underCase when accept "TextContent", true', () => {
+    expect(js.underCase('TextContent', true)).toBe('text_content')
   })
 
-  test('Test hyphenate when accept "_text_content"', () => {
-    expect(js.hyphenate('_text_content')).toBe('-text-content')
+  test('Test underCase when accept "_text_content"', () => {
+    expect(js.underCase('_text_content')).toBe('_text_content')
   })
 
-  test('Test hyphenate when accept "_text_content", true', () => {
-    expect(js.hyphenate('_text_content', true)).toBe('text-content')
+  test('Test underCase when accept "_text_content", true', () => {
+    expect(js.underCase('_text_content', true)).toBe('text_content')
   })
 
-  test('Test hyphenate when accept "-text-content"', () => {
-    expect(js.hyphenate('-text-content')).toBe('-text-content')
+  test('Test underCase when accept "-text-content"', () => {
+    expect(js.underCase('-text-content')).toBe('_text_content')
   })
 
-  test('Test hyphenate when accept "-text-content", true', () => {
-    expect(js.hyphenate('-text-content', true)).toBe('text-content')
+  test('Test underCase when accept "-text-content", true', () => {
+    expect(js.underCase('-text-content', true)).toBe('text_content')
   })
 
 
   /**
-   * Test underline
+   * Test hyphenCase
    */
-  test('Test underline when accept undefined', () => {
-    expect(js.underline(undefined)).toBe(undefined)
+  test('Test hyphenCase when accept undefined', () => {
+    expect(js.hyphenCase(undefined)).toBe(undefined)
   })
 
-  test('Test underline when accept undefined, true', () => {
-    expect(js.underline(undefined, true)).toBe(undefined)
+  test('Test hyphenCase when accept undefined, true', () => {
+    expect(js.hyphenCase(undefined, true)).toBe(undefined)
   })
 
-  test('Test underline when accept "TextContent"', () => {
-    expect(js.underline('TextContent')).toBe('_text_content')
+  test('Test hyphenCase when accept "TextContent"', () => {
+    expect(js.hyphenCase('TextContent')).toBe('-text-content')
   })
 
-  test('Test underline when accept "TextContent", true', () => {
-    expect(js.underline('TextContent', true)).toBe('text_content')
+  test('Test hyphenCase when accept "TextContent", true', () => {
+    expect(js.hyphenCase('TextContent', true)).toBe('text-content')
   })
 
-  test('Test underline when accept "_text_content"', () => {
-    expect(js.underline('_text_content')).toBe('_text_content')
+  test('Test hyphenCase when accept "_text_content"', () => {
+    expect(js.hyphenCase('_text_content')).toBe('-text-content')
   })
 
-  test('Test underline when accept "_text_content", true', () => {
-    expect(js.underline('_text_content', true)).toBe('text_content')
+  test('Test hyphenCase when accept "_text_content", true', () => {
+    expect(js.hyphenCase('_text_content', true)).toBe('text-content')
   })
 
-  test('Test underline when accept "-text-content"', () => {
-    expect(js.underline('-text-content')).toBe('_text_content')
+  test('Test hyphenCase when accept "-text-content"', () => {
+    expect(js.hyphenCase('-text-content')).toBe('-text-content')
   })
 
-  test('Test underline when accept "-text-content", true', () => {
-    expect(js.underline('-text-content', true)).toBe('text_content')
+  test('Test hyphenCase when accept "-text-content", true', () => {
+    expect(js.hyphenCase('-text-content', true)).toBe('text-content')
   })
 })
