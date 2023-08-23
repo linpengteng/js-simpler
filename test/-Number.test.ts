@@ -3,6 +3,22 @@ import js from '../src/-Number'
 
 describe('Test Number', () => {
   /**
+   * Test isNaN
+   */
+  test('Test isNaN when accept NaN', () => {
+    expect(js.isNaN(NaN)).toBeTruthy()
+  })
+
+  test('Test isNaN when accept "any"', () => {
+    expect(js.isNaN('any')).toBeFalsy()
+  })
+
+  test('Test isNaN when accept 123456', () => {
+    expect(js.isNaN(123456)).toBeFalsy()
+  })
+
+
+  /**
    * Test isNumber
    */
   test('Test isNumber when accept NaN', () => {

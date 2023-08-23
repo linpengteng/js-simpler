@@ -15,7 +15,7 @@ import _WeakMap from './-WeakMap'
 import _Function from './-Function'
 import _Currylize from './~Currylize'
 import _Generalize from './~Generalize'
-import _Animation from './~Animation'
+import _Animater from './~Animater'
 import _Formater from './~Formater'
 import _Nullable from './~Nullable'
 import { Tween } from './~Tween'
@@ -38,7 +38,7 @@ export * from './-WeakMap'
 export * from './-Function'
 export * from './~Currylize'
 export * from './~Generalize'
-export * from './~Animation'
+export * from './~Animater'
 export * from './~Formater'
 export * from './~Nullable'
 export * from './~Tween'
@@ -63,7 +63,7 @@ export default {
   ..._Function,
   ..._Currylize,
   ..._Generalize,
-  ..._Animation,
+  ..._Animater,
   ..._Nullable,
   ..._Formater
 }

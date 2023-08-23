@@ -1,9 +1,13 @@
+export const isNaN = (num: unknown): num is number => {
+  return Number.isNaN(num)
+}
+
 export const isNumber = (num: unknown): num is number => {
   return Object.prototype.toString.call(num) === '[object Number]'
 }
 
 export const isInteger = (num: unknown): num is number => {
-  return isFiniteNumber(num) && /^\d+$|^\d+\.0*$|^\.0+$/.test(String(num))
+  return Number.isSafeInteger(num)
 }
 
 export const isDecimal = (num: unknown): num is number => {
@@ -106,6 +110,7 @@ export const toFixed = (num?: unknown, lie = NaN): string => {
 
 
 export default {
+  isNaN,
   isNumber,
   isInteger,
   isDecimal,
