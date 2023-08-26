@@ -105,6 +105,31 @@ declare const deepAssign: <T = unknown>(val: T, ...rest: any[]) => T;
 declare const deepClone: <T = unknown>(val: T, opts?: CloneOptionsType) => T;
 declare const deepEqual: (one: unknown, two: unknown, opts?: EqualOptionsType) => boolean;
 
+type UniquerOptions = {
+    radix?: 2 | 8 | 10 | 16 | 26 | 36;
+    format?: string | null;
+    random?: '?' | '*' | '#';
+    usedUniques?: Array<string> | Set<string> | null;
+    listenCacherHandler?: ListenCacherHandler | null;
+    reduplicateHandler?: ReduplicateHandler | null;
+    reduplicateExit?: boolean | null;
+    onlyUpdate?: boolean | null;
+};
+type RandomizeOptions = {
+    bytes: string[];
+    max: number;
+    min: number;
+};
+type CacherOptions = Set<string>;
+type ListenCacherHandler = (options: CacherOptions) => void;
+type ReduplicateHandler = (options: UniquerOptions) => UniquerOptions;
+type Randomize = (options: RandomizeOptions) => string;
+type Uniquer = (options?: UniquerOptions) => string;
+/**
+ * Uniquer
+ */
+declare const uniquer: Uniquer;
+
 declare const isNonEmptySet: (set: unknown) => set is Set<unknown>;
 declare const isEmptySet: (set: unknown) => set is Set<unknown>;
 declare const isSet: (set: unknown) => set is Set<unknown>;
@@ -173,7 +198,7 @@ declare const isDecimal: (num: unknown) => num is number;
 declare const isFiniteNumber: (num: unknown) => num is number;
 declare const toFiniteNumber: (num?: unknown, lie?: number) => number;
 declare const toDecimal: (num?: unknown, lie?: number) => number;
-declare const toInteger: (num?: unknown, _?: number) => number;
+declare const toInteger: (num?: unknown, _?: never) => number;
 declare const toNumber: (num?: unknown, lie?: number) => number;
 declare const toFixed: (num?: unknown, lie?: number) => string;
 
@@ -223,15 +248,15 @@ declare const isAsyncFunction: (func: unknown) => func is Function;
 declare const isFunction: (func: unknown) => func is Function;
 declare const toFunction: (...rest: unknown[]) => Function;
 
+declare const isNull: (val: unknown) => val is null;
+declare const isUndef: (val: unknown) => val is undefined;
+declare const isNullable: (val: unknown) => val is null | undefined;
+
 declare const lowerCase: <T = any>(string: T) => T;
 declare const upperCase: <T = any>(string: T) => T;
 declare const camelCase: <T = any>(string: T, first?: boolean) => T;
 declare const underCase: <T = any>(string: T, first?: boolean) => T;
 declare const hyphenCase: <T = any>(string: T, first?: boolean) => T;
-
-declare const isNull: (val: unknown) => val is null;
-declare const isUndef: (val: unknown) => val is undefined;
-declare const isNullable: (val: unknown) => val is null | undefined;
 
 declare const Tween: {
     linear(t: number): number;
@@ -268,14 +293,12 @@ declare const Tween: {
 };
 
 declare const _default: {
+    uniquer: Uniquer;
     lowerCase: <T = any>(string: T) => T;
     upperCase: <T_1 = any>(string: T_1) => T_1;
     camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
     underCase: <T_3 = any>(string: T_3, first?: boolean) => T_3;
     hyphenCase: <T_4 = any>(string: T_4, first?: boolean) => T_4;
-    isNull: (val: unknown) => val is null;
-    isUndef: (val: unknown) => val is undefined;
-    isNullable: (val: unknown) => val is null | undefined;
     debounce: (func: Function, wait: number, options?: {
         leading?: boolean | undefined;
         trailing?: boolean | undefined;
@@ -293,15 +316,18 @@ declare const _default: {
         cancel: () => void;
         flush: () => any;
     };
-    omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
-    pick: <T_1 = unknown>(val: T_1, arr: FilterTypes | FilterType, deep?: DeepType) => T_1;
+    omit: <T_5 = unknown>(val: T_5, arr: FilterTypes | FilterType, deep?: DeepType) => T_5;
+    pick: <T_6 = unknown>(val: T_6, arr: FilterTypes | FilterType, deep?: DeepType) => T_6;
     equal: (one: unknown, two: unknown, opts?: DeepType | EqualOptionsType) => boolean;
-    clone: <T_2 = unknown>(val: T_2, opts?: DeepType | CloneOptionsType) => T_2;
-    assign: <T_3 = unknown>(val: T_3, ...rest: any[]) => T_3;
-    deepAssign: <T_4 = unknown>(val: T_4, ...rest: any[]) => T_4;
-    deepClone: <T_5 = unknown>(val: T_5, opts?: CloneOptionsType) => T_5;
+    clone: <T_7 = unknown>(val: T_7, opts?: DeepType | CloneOptionsType) => T_7;
+    assign: <T_8 = unknown>(val: T_8, ...rest: any[]) => T_8;
+    deepAssign: <T_9 = unknown>(val: T_9, ...rest: any[]) => T_9;
+    deepClone: <T_10 = unknown>(val: T_10, opts?: CloneOptionsType) => T_10;
     deepEqual: (one: unknown, two: unknown, opts?: EqualOptionsType) => boolean;
     curry: Curry;
+    isNull: (val: unknown) => val is null;
+    isUndef: (val: unknown) => val is undefined;
+    isNullable: (val: unknown) => val is null | undefined;
     isGeneratorFunction: (func: unknown) => func is Function;
     isGeneralFunction: (func: unknown) => func is Function;
     isAsyncFunction: (func: unknown) => func is Function;
@@ -314,10 +340,10 @@ declare const _default: {
     toWeakSet: (set?: unknown) => WeakSet<object>;
     newWeakSet: (set?: unknown) => WeakSet<object>;
     isPromise: (val: unknown) => val is Promise<unknown>;
-    toPromise: <T_6 = unknown>(wait?: unknown) => Promise<T_6>;
-    newPromise: <T_7 = unknown>() => {
-        promise: Promise<T_7>;
-        resolve: (value: T_7 | PromiseLike<T_7>) => void;
+    toPromise: <T_11 = unknown>(wait?: unknown) => Promise<T_11>;
+    newPromise: <T_12 = unknown>() => {
+        promise: Promise<T_12>;
+        resolve: (value: T_12 | PromiseLike<T_12>) => void;
         reject: (reason?: any) => void;
     };
     isTrue: (bool: unknown) => bool is true;
@@ -346,7 +372,7 @@ declare const _default: {
     isFiniteNumber: (num: unknown) => num is number;
     toFiniteNumber: (num?: unknown, lie?: number) => number;
     toDecimal: (num?: unknown, lie?: number) => number;
-    toInteger: (num?: unknown, _?: number | undefined) => number;
+    toInteger: (num?: unknown, _?: undefined) => number;
     toNumber: (num?: unknown, lie?: number) => number;
     toFixed: (num?: unknown, lie?: number) => string;
     isNonEmptyArray: (arr: unknown) => arr is any[];
@@ -368,17 +394,17 @@ declare const _default: {
     newRangeError: (message?: string | undefined) => RangeError;
     newSyntaxError: (message?: string | undefined) => SyntaxError;
     newReferenceError: (message?: string | undefined) => ReferenceError;
-    isCustomizeError: <T_8 extends Record<string, any> = any>(err: unknown, type?: symbol | undefined) => err is {
+    isCustomizeError: <T_13 extends Record<string, any> = any>(err: unknown, type?: symbol | undefined) => err is {
         type: symbol;
         name: string;
         stack: string;
         message: string;
         options: {
             [key: string]: any;
-        } & T_8;
+        } & T_13;
         cause?: unknown;
     };
-    newCustomizeError: <T_9 extends Record<string, any> = any>(messager?: string | {
+    newCustomizeError: <T_14 extends Record<string, any> = any>(messager?: string | {
         [key: string]: any;
         type?: symbol | undefined;
         name?: string | undefined;
@@ -391,7 +417,7 @@ declare const _default: {
         message: string;
         options: {
             [key: string]: any;
-        } & T_9;
+        } & T_14;
         cause?: unknown;
     };
     isValidDate: (date: unknown) => date is Date;
@@ -447,4 +473,4 @@ declare const _default: {
     };
 };
 
-export { type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, Tween, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, upperCase, yesterday };
+export { type CacherOptions, type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, type ListenCacherHandler, type Randomize, type RandomizeOptions, type ReduplicateHandler, Tween, type Uniquer, type UniquerOptions, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, uniquer, upperCase, yesterday };

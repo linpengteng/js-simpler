@@ -52,6 +52,7 @@ const debounce = (func: Function, wait: number, options: { leading?: boolean; tr
   function shouldInvoke(time: number) {
     const timeSinceLastCall = time - lastCallTime
     const timeSinceLastInvoke = time - lastInvokeTime
+
     return (
       lastCallTime === 0 ||
       timeSinceLastCall < 0 ||

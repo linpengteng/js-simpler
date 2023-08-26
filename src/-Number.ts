@@ -7,7 +7,7 @@ export const isNumber = (num: unknown): num is number => {
 }
 
 export const isInteger = (num: unknown): num is number => {
-  return Number.isSafeInteger(num)
+  return isNumber(num) && Number.isSafeInteger(num)
 }
 
 export const isDecimal = (num: unknown): num is number => {
@@ -50,7 +50,7 @@ export const toDecimal = (num?: unknown, lie = NaN): number => {
   return 0
 }
 
-export const toInteger = (num?: unknown, _?: number): number => {
+export const toInteger = (num?: unknown, _?: never): number => {
   if (num === Infinity) {
     return Number.MAX_SAFE_INTEGER
   }

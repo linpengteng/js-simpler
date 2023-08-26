@@ -5,7 +5,7 @@ describe('Test Currylize', () => {
   /**
    * Test curry
    */
-  test('Test curry has error', () => {
+  test('Test curry has throw error', () => {
     expect(js.curry).toThrow('#<fn> is not a function')
   })
 
@@ -18,7 +18,6 @@ describe('Test Currylize', () => {
 
   test('Test curry when accept (x, y, z) => x * y - y * m - n, 4', () => {
     const fn = (x: number, y: number, m: number, n: number) => x * y - y * m - n
-    expect(js.curry(fn, 4)(30, 20, 10, 5)).toBe(395)
     expect(js.curry(fn, 4)(30, 20, 10, 5)).toBe(395)
   })
 })
