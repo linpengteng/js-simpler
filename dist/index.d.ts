@@ -84,11 +84,10 @@ type DeepType = boolean | number;
 type FilterType = string | number | RegExp;
 type FilterTypes = Array<string | number | RegExp>;
 type CloneOptionsType = {
-    omit?: FilterTypes;
-    pick?: FilterTypes;
-    copy?: FilterTypes;
-    deep?: DeepType;
+    omits?: FilterTypes;
+    picks?: FilterTypes;
     cache?: WeakMap<object, unknown>;
+    deep?: DeepType;
 };
 type EqualOptionsType = {
     strict?: FilterTypes;
@@ -96,8 +95,8 @@ type EqualOptionsType = {
     exclude?: FilterTypes;
     deep?: DeepType;
 };
-declare const omit: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
-declare const pick: <T = unknown>(val: T, arr: FilterTypes | FilterType, deep?: DeepType) => T;
+declare const omit: <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep?: DeepType) => T;
+declare const pick: <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep?: DeepType) => T;
 declare const equal: (one: unknown, two: unknown, opts?: EqualOptionsType | DeepType) => boolean;
 declare const clone: <T = unknown>(val: T, opts?: CloneOptionsType | DeepType) => T;
 declare const assign: <T = unknown>(val: T, ...rest: any[]) => T;
@@ -195,6 +194,7 @@ declare const isNaN: (num: unknown) => num is number;
 declare const isNumber: (num: unknown) => num is number;
 declare const isInteger: (num: unknown) => num is number;
 declare const isDecimal: (num: unknown) => num is number;
+declare const isInfinity: (num: unknown) => num is number;
 declare const isFiniteNumber: (num: unknown) => num is number;
 declare const toFiniteNumber: (num?: unknown, lie?: number) => number;
 declare const toDecimal: (num?: unknown, lie?: number) => number;
@@ -316,8 +316,8 @@ declare const _default: {
         cancel: () => void;
         flush: () => any;
     };
-    omit: <T_5 = unknown>(val: T_5, arr: FilterTypes | FilterType, deep?: DeepType) => T_5;
-    pick: <T_6 = unknown>(val: T_6, arr: FilterTypes | FilterType, deep?: DeepType) => T_6;
+    omit: <T_5 = unknown>(val: T_5, arr?: FilterTypes | FilterType | undefined, deep?: DeepType) => T_5;
+    pick: <T_6 = unknown>(val: T_6, arr?: FilterTypes | FilterType | undefined, deep?: DeepType) => T_6;
     equal: (one: unknown, two: unknown, opts?: DeepType | EqualOptionsType) => boolean;
     clone: <T_7 = unknown>(val: T_7, opts?: DeepType | CloneOptionsType) => T_7;
     assign: <T_8 = unknown>(val: T_8, ...rest: any[]) => T_8;
@@ -369,6 +369,7 @@ declare const _default: {
     isNumber: (num: unknown) => num is number;
     isInteger: (num: unknown) => num is number;
     isDecimal: (num: unknown) => num is number;
+    isInfinity: (num: unknown) => num is number;
     isFiniteNumber: (num: unknown) => num is number;
     toFiniteNumber: (num?: unknown, lie?: number) => number;
     toDecimal: (num?: unknown, lie?: number) => number;
@@ -473,4 +474,4 @@ declare const _default: {
     };
 };
 
-export { type CacherOptions, type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, type ListenCacherHandler, type Randomize, type RandomizeOptions, type ReduplicateHandler, Tween, type Uniquer, type UniquerOptions, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, uniquer, upperCase, yesterday };
+export { type CacherOptions, type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, type ListenCacherHandler, type Randomize, type RandomizeOptions, type ReduplicateHandler, Tween, type Uniquer, type UniquerOptions, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInfinity, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, uniquer, upperCase, yesterday };

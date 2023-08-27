@@ -13,12 +13,12 @@ export default {
   coverageThreshold: {
     global: {
       lines: 95,
-      branches: 90,
-      functions: 90,
+      branches: 95,
+      functions: 95,
       statements: 95
     }
   },
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/~Generalize.ts', '!src/**/~Animater.ts', '!src/**/~Tween.ts', '!src/**/browser.ts', '!src/**/simpler.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/~Animater.ts', '!src/**/~Tween.ts', '!src/**/browser.ts', '!src/**/simpler.ts'],
   coverageReporters: ['html', 'json', 'text'],
   coverageDirectory: '.coverage',
   coverageProvider: 'babel',

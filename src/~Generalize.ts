@@ -1,29 +1,28 @@
-import { isFiniteNumber } from './-Number'
+import { isFiniteNumber, isNumber, isNaN } from './-Number'
 import { isWeakMap } from './-WeakMap'
 import { isUndef } from './~Nullable'
 import { isRegExp } from './-RegExp'
 import { isObject } from './-Object'
-import { isSymbol } from './-Symbol'
 import { isString } from './-String'
 import { isArray } from './-Array'
 import { isDate } from './-Date'
-import { isSet } from './-Set'
 import { isMap } from './-Map'
+import { isSet } from './-Set'
 
 
 export type DeepType = boolean | number
 export type FilterType = string | number | RegExp
 export type FilterTypes = Array<string | number | RegExp>
-export type CloneOptionsType = { omit?: FilterTypes; pick?: FilterTypes; copy?: FilterTypes; deep?: DeepType; cache?: WeakMap<object, unknown>; }
+export type CloneOptionsType = { omits?: FilterTypes; picks?: FilterTypes; cache?: WeakMap<object, unknown>; deep?: DeepType; }
 export type EqualOptionsType = { strict?: FilterTypes; include?:FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
 
 
-export const omit = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
-  return clone(val, { omit: isArray(arr) ? arr : [arr], deep })
+export const omit = <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep: DeepType = false): T => {
+  return clone(val, { omits: isArray(arr) ? arr : !isUndef(arr) ? [arr] : [], deep })
 }
 
-export const pick = <T = unknown>(val: T, arr: FilterTypes | FilterType, deep: DeepType = false): T => {
-  return clone(val, { pick: isArray(arr) ? arr : [arr], deep })
+export const pick = <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep: DeepType = false): T => {
+  return clone(val, { picks: isArray(arr) ? arr : !isUndef(arr) ? [arr] : [], deep })
 }
 
 export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepType = false): boolean => {
@@ -43,24 +42,20 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     return one.source === two.source && one.flags === two.flags && one.lastIndex === two.lastIndex
   }
 
-  if (isSymbol(one) && isSymbol(two)) {
-    return !isUndef(Symbol.keyFor(one)) && Symbol.keyFor(one) === Symbol.keyFor(two)
-  }
-
   if (isObject(one) && isObject(two)) {
     if (Object.keys(one).length !== Object.keys(two).length) {
       return false
     }
 
     const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
+    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
+    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : [/(?:)/]
 
     for (const key of Object.keys(one)) {
       const val1 = one[key]
       const val2 = two[key]
-      const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 0
+      const level = isNumber(deep) ? deep : deep === true ? Infinity : 0
       const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
@@ -95,14 +90,14 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
     }
 
     const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : [/(?:)/]
+    const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
+    const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
+    const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : [/(?:)/]
 
     for (const key of one.keys()) {
       const val1 = one[key]
       const val2 = two[key]
-      const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 0
+      const level = isNumber(deep) ? deep : deep === true ? Infinity : 0
       const stricted = strict.length > 0 && strict.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
       const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
@@ -148,38 +143,28 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
 
 export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false) : T => {
   const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
-  const omits = isObject(opts) && isArray(opts.omit) ? opts.omit.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-  const picks = isObject(opts) && isArray(opts.pick) ? opts.pick.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
-  const copys = isObject(opts) && isArray(opts.copy) ? opts.copy.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+  const omits = isObject(opts) && isArray(opts.omits) ? opts.omits.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
+  const picks = isObject(opts) && isArray(opts.picks) ? opts.picks.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
   const cache = isObject(opts) && isWeakMap(opts.cache) ? opts.cache : new WeakMap()
+  const level = isNumber(deep) ? deep : deep === true ? Infinity : 1
 
-  const taking = (val: any) => {
-    return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
+  const taking = (val: any): any[] => {
+    return isObject(val) ? Object.entries(val) : val.entries()
   }
 
   const cloning = (val: T, level: number): T => {
-    const value: any = isArray(val)
-      ? []
-      : {}
+    const value: any = isArray(val) ? [] : {}
 
     for (const [key, source] of taking(val)) {
-      if (!picks.every(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
+      if (picks.length > 0 && !picks.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
         continue
       }
 
-      if (omits.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
+      if (omits.length > 0 && omits.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
         continue
       }
 
-      if (copys.every(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))) {
-        value[key] = source
-        continue
-      }
-
-      if (level < 1) {
-        value[key] = source
-        continue
-      }
+      let record = source
 
       const isCopySet = isSet(source)
       const isCopyMap = isMap(source)
@@ -189,18 +174,26 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
       const isCopyRegExp = isRegExp(source)
 
       if (!isCopySet && !isCopyMap && !isCopyDate && !isCopyArray && !isCopyObject && !isCopyRegExp) {
-        value[key] = source
+        isArray(value) ? value.push(record) : value[key] = record
         continue
       }
 
-      if (!cache.has(source)) {
-        cache.set(source, clone(source, level - 1))
+      if (level > 1 && !cache.has(source)) {
+        cache.set(source, clone(source, { omits, picks, cache, deep: level - 1 }))
       }
 
-      value[key] = cache.get(source)
+      if (level > 1 && cache.has(source)) {
+        record = cache.get(source)
+      }
+
+      isArray(value) ? value.push(record) : value[key] = record
     }
 
     return value as T
+  }
+
+  if (isNaN(level) || level < 1) {
+    return val
   }
 
   if (isRegExp(val)) {
@@ -212,13 +205,11 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
   }
 
   if (isObject(val)) {
-    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return level >= 1 ? cloning(val, level) : val
+    return cloning(val, level)
   }
 
   if (isArray(val)) {
-    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
-    return level >= 1 ? cloning(val, level) : val
+    return cloning(val, level)
   }
 
   if (isDate(val)) {
@@ -227,13 +218,11 @@ export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = f
 
   if (isMap(val)) {
     const maps = Array.from(val.entries()) as any
-    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return new Map(cloning(maps, level) as any) as T
   }
 
   if (isSet(val)) {
     const sets = Array.from(val.values()) as any
-    const level = deep === true || deep === Infinity ? Infinity : isFiniteNumber(deep) ? deep : 1
     return new Set(cloning(sets, level) as any) as T
   }
 
@@ -244,21 +233,17 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
   const empty = {}
   const cache = new WeakMap()
   const state = rest.slice(-1)[0]
-  const level = state === true || state === Infinity ? Infinity : isFiniteNumber(state) ? state : 1
+  const level = isNumber(state) ? state : state === true ? Infinity : 1
 
   const taking = (val: any) => {
-    return isObject(val) ? Object.entries(val) : isArray(val) ? val.entries() : []
+    return isObject(val) ? Object.entries(val) : val.entries()
   }
 
   const merging = (val: T, obj: T, level: number) => {
     const refly: any = isMap(val) ? Array.from(val.entries()) : isSet(val) ? Array.from(val.values()) : val
-    const newly: any = isMap(obj) ? Array.from(obj.entries()) : isSet(obj) ? Array.from(obj.values()) : val
+    const newly: any = isMap(obj) ? Array.from(obj.entries()) : isSet(obj) ? Array.from(obj.values()) : obj
 
     for (const [key, source] of taking(newly)) {
-      if (isUndef(source)) {
-        continue
-      }
-
       if (level < 1) {
         refly[key] = source
         continue
@@ -270,6 +255,7 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
       const isCopyArray = isArray(source)
       const isCopyObject = isObject(source)
       const isCopyRegExp = isRegExp(source)
+      const isNotSameType = empty.toString.call(refly[key]) !== empty.toString.call(source)
 
       if (!isCopySet && !isCopyMap && !isCopyDate && !isCopyArray && !isCopyObject && !isCopyRegExp) {
         refly[key] = source
@@ -277,24 +263,40 @@ export const assign = <T = unknown>(val: T, ...rest: any[]) => {
       }
 
       if (!cache.has(source)) {
-        cache.set(source, clone(source, { deep: true, cache }))
+        cache.set(source, clone(source, { deep: level, cache }))
       }
 
-      if (empty.toString.call(refly[key]) !== empty.toString.call(source)) {
+      if (isNotSameType) {
         refly[key] = cache.get(source)
         continue
       }
 
       merging(refly[key], newly[key], level - 1)
     }
+
+    if (isMap(val) || isSet(val)) {
+      val.clear()
+    }
+
+    if (isMap(val)) {
+      for (const [key, source] of refly) {
+        val.set(key, source)
+      }
+    }
+
+    if (isSet(val)) {
+      for (const source of refly) {
+        val.add(source)
+      }
+    }
   }
 
   if (isObject(val) || isArray(val) || isMap(val) || isSet(val)) {
     for (const obj of rest) {
       if (empty.toString.call(val) !== empty.toString.call(obj)) {
-        break
+        continue
       }
-      merging(val, obj, level)
+      merging(val, obj, level - 1)
     }
   }
 

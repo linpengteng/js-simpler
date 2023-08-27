@@ -91,6 +91,27 @@ describe('Test Number', () => {
 
 
   /**
+   * Test isInfinity
+   */
+  test('Test isInfinity when accept NaN', () => {
+    expect(js.isInfinity(NaN)).toBeFalsy()
+  })
+
+
+  test('Test isInfinity when accept 123456', () => {
+    expect(js.isInfinity(123456)).toBeFalsy()
+  })
+
+  test('Test isInfinity when accept Infinity', () => {
+    expect(js.isInfinity(Infinity)).toBeTruthy()
+  })
+
+  test('Test isInfinity when accept -Infinity', () => {
+    expect(js.isInfinity(-Infinity)).toBeTruthy()
+  })
+
+
+  /**
    * Test isFiniteNumber
    */
   test('Test isFiniteNumber when accept NaN', () => {

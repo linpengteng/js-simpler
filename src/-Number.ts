@@ -14,6 +14,10 @@ export const isDecimal = (num: unknown): num is number => {
   return isNumber(num) && Number.isFinite(num)
 }
 
+export const isInfinity = (num: unknown): num is number => {
+  return isNumber(num) && (num === Infinity || num === -Infinity)
+}
+
 export const isFiniteNumber = (num: unknown): num is number => {
   return isNumber(num) && Number.isFinite(num)
 }
@@ -114,6 +118,7 @@ export default {
   isNumber,
   isInteger,
   isDecimal,
+  isInfinity,
   isFiniteNumber,
   toFiniteNumber,
   toDecimal,
