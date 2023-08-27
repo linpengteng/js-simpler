@@ -1,6 +1,6 @@
 # js-simpler
 
-一个轻量级且模块化的JavaScript实用程序库
+一个轻量级且模块化的JavaScript实用工具库
 
 <br />
 
@@ -156,7 +156,7 @@
 
 <br />
 
-## API 测试如下
+## API Jest测试
 
 <p align="center">
   <img 
