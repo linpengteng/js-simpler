@@ -171,7 +171,6 @@ describe('Test Date', () => {
     expect(js.showDate(new Date(), 'yyyy-m-d')).toMatch(/^\d{4}-\d{1,2}-\d{1,2}$/)
   })
 
-
   test('Test showDate when accept new Date(), "HH:mm:ss"', () => {
     const date = new Date()
     const format = 'HH:mm:ss'
