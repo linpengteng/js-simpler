@@ -1,6 +1,6 @@
 # js-simpler
 
-一个轻量级且模块化的JavaScript实用工具库
+一个轻量级且模块化的JavaScript实用工具库 (支持 Typescript 类型校验/提示)
 
 <br />
 
@@ -21,6 +21,14 @@
   js.isNonEmptyArray([]) // false
   js.isEmptyArray([]) // true
   js.isArray([]) // true
+  ```
+
+  ```ts
+  import { isNonEmptyArray, isEmptyArray, isArray } from 'js-simpler'
+
+  isNonEmptyArray([]) // false
+  isEmptyArray([]) // true
+  isArray([]) // true
   ```
 
 <br />
