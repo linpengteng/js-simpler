@@ -34,7 +34,7 @@
     }
   },
   "git": {
-    "commitMessage": "chore: Add new Tag and Release v${version}"
+    "commitMessage": "chore: add new tag and release v${version}"
   },
   "github": {
     "release": true,
