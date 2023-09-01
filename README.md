@@ -4,7 +4,26 @@
 
 <br />
 
-## 如何使用
+## 相关文章
+
+1. [`自定义 JavaScript 实用工具库 — 01 (上篇)`](https://juejin.cn/post/7271832299338760244) 
+2. [`自定义 JavaScript 实用工具库 — 02 (下篇)`](https://juejin.cn/spost/7271832299338973236)
+
+<br />
+
+## API Jest 测试
+
+<p align="center">
+  <img 
+    style="width: 99%; margin: 0 auto;" 
+    src="https://linpengteng.github.io/resource/js-simpler/test.jpg" 
+    alt="Vue Sticker Table"
+  >
+</p>
+
+<br />
+
+## API 如何使用
 
 ### - install
 
@@ -161,18 +180,6 @@
 |Uniquer|uniquer|生成 uuid或指定格式的UniqueId|`Finish`|`Pass`|
 |-|-|-|-|-|
 |Tween|*|Tween动画算法, [`查看`](https://github.com/linpengteng/js-simpler/blob/main/src/~Tween.ts)|`Finish`|`Not Tested`|
-
-<br />
-
-## API Jest测试
-
-<p align="center">
-  <img 
-    style="width: 99%; margin: 0 auto;" 
-    src="https://linpengteng.github.io/resource/js-simpler/test.jpg" 
-    alt="Vue Sticker Table"
-  >
-</p>
 
 <br />
 
