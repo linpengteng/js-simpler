@@ -1,4 +1,6 @@
+## 1.2.1 (2023-12-20)
 
+* upgrade third-party denpendencies
 
 ## 1.1.0 (2023-08-28)
 
