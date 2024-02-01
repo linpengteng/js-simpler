@@ -1,3 +1,7 @@
+
+
+## [1.2.2](https://github.com/linpengteng/js-simpler/compare/1.1.0...1.2.2) (2024-02-01)
+
 ## 1.2.1 (2023-12-20)
 
 * upgrade third-party denpendencies

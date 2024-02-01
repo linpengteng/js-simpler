@@ -2,7 +2,7 @@
   "name": "js-simpler",
   "description": "一个轻量级且模块化的JavaScript实用工具库",
   "homepage": "https://github.com/linpengteng/js-simpler#readme",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "license": "MIT",
   "author": "lin pengteng <china.linpengteng@gmail.com>",
   "main": "./dist/index.simpler.cjs",
