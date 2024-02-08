@@ -71,8 +71,8 @@
 |Date|newDate|转换成 新日期 Date|`Finish`|`Pass`|
 |Date|showDate|输出 指定格式的日期文本|`Finish`|`Pass`|
 |Date|yesterday|获取 昨天日期 Date|`Finish`|`Pass`|
-|Date|tomorrow|获取 今天日期 Date|`Finish`|`Pass`|
-|Date|today|获取 明天日期 Date|`Finish`|`Pass`|
+|Date|tomorrow|获取 明天日期 Date|`Finish`|`Pass`|
+|Date|today|获取 今天日期 Date|`Finish`|`Pass`|
 |-|-|-|-|-|
 |Error|isError|是否是 一个Error|`Finish`|`Pass`|
 |Error|isURIError|是否是 一个URIError|`Finish`|`Pass`|
