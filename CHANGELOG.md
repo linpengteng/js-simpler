@@ -1,5 +1,12 @@
 
 
+## [1.4.0](https://github.com/linpengteng/js-simpler/compare/1.3.0...1.4.0) (2024-03-05)
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* **~Generalize:** fix the bug of equal api ([f67abb3](https://github.com/linpengteng/js-simpler/commit/f67abb32d55ce024a7aaf8118dc18943688d28fb))
+
 ## [1.3.0](https://github.com/linpengteng/js-simpler/compare/1.1.0...1.3.0) (2024-02-08)
 
 ## [1.2.2](https://github.com/linpengteng/js-simpler/compare/1.1.0...1.2.2) (2024-02-01)
