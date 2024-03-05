@@ -43,14 +43,26 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
   }
 
   if (isObject(one) && isObject(two)) {
-    if (Object.keys(one).length !== Object.keys(two).length) {
-      return false
-    }
-
     const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
     const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
     const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
     const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : [/(?:)/]
+
+    const oneKeys = Object.keys(one).filter(key => {
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      return !excluded && included
+    })
+
+    const twoKeys = Object.keys(two).filter(key => {
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      return !excluded && included
+    })
+
+    if (oneKeys.length !== twoKeys.length) {
+      return false
+    }
 
     for (const key of Object.keys(one)) {
       const val1 = one[key]
@@ -85,14 +97,26 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
   }
 
   if (isArray(one) && isArray(two)) {
-    if (one.length !== two.length) {
-      return false
-    }
-
     const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
     const strict = isObject(opts) && isArray(opts.strict) ? opts.strict.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
     const exclude = isObject(opts) && isArray(opts.exclude) ? opts.exclude.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : []
     const include = isObject(opts) && isArray(opts.include) ? opts.include.filter(key => isRegExp(key) || isFiniteNumber(key) || isString(key)) : [/(?:)/]
+
+    const oneKeys = Object.keys(one).filter(key => {
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      return !excluded && included
+    })
+
+    const twoKeys = Object.keys(two).filter(key => {
+      const excluded = exclude.length > 0 && exclude.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      const included = include.length === 0 || include.some(k => isRegExp(k) ? k.test(String(key)) : String(k) === String(key))
+      return !excluded && included
+    })
+
+    if (oneKeys.length !== twoKeys.length) {
+      return false
+    }
 
     for (const key of one.keys()) {
       const val1 = one[key]
