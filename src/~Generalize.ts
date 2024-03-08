@@ -85,7 +85,7 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
       }
 
       const reuslt = level >= 1
-        ? equal(val1, val2, level - 1)
+        ? equal(val1, val2, { strict, include, exclude, deep: level - 1 })
         : false
 
       if (!reuslt) {
@@ -139,7 +139,7 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
       }
 
       const reuslt = level >= 1
-        ? equal(val1, val2, level - 1)
+        ? equal(val1, val2, { strict, include, exclude, deep: level - 1 })
         : false
 
       if (!reuslt) {
