@@ -10,9 +10,8 @@ export const isNullable = (val: unknown): val is null | undefined => {
   return isNull(val) || isUndef(val)
 }
 
-
 export default {
   isNull,
   isUndef,
-  isNullable
+  isNullable,
 }

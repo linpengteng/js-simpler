@@ -2,7 +2,6 @@ import { isArray } from './-Array'
 import { isMap } from './-Map'
 import { isSet } from './-Set'
 
-
 export const isNonEmptyObject = (obj: unknown): obj is Record<string, unknown> => {
   return isObject(obj) && Object.keys(obj).length > 0
 }
@@ -55,11 +54,10 @@ export const newObject = (obj?: unknown): Record<string, unknown> => {
   return {}
 }
 
-
 export default {
   isNonEmptyObject,
   isEmptyObject,
   isObject,
   toObject,
-  newObject
+  newObject,
 }

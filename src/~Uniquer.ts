@@ -2,7 +2,6 @@ import { isFunction } from './-Function'
 import { isArray } from './-Array'
 import { isSet } from './-Set'
 
-
 export type UniquerOptions = {
   radix?: 2 | 8 | 10 | 16 | 26 | 36;
   format?: string | null;
@@ -21,17 +20,15 @@ export type RandomizeOptions = {
 }
 
 export type CacherOptions = Set<string>
-export type ListenCacherHandler = (options: CacherOptions) => void;
-export type ReduplicateHandler = (options: UniquerOptions) => UniquerOptions;
-export type Randomize = (options: RandomizeOptions) => string;
-export type Uniquer = (options?: UniquerOptions) => string;
-
+export type ListenCacherHandler = (options: CacherOptions) => void
+export type ReduplicateHandler = (options: UniquerOptions) => UniquerOptions
+export type Randomize = (options: RandomizeOptions) => string
+export type Uniquer = (options?: UniquerOptions) => string
 
 /**
  * Cacher
  */
 const Cacher: CacherOptions = new Set([''])
-
 
 /**
  * Uniquer
@@ -113,14 +110,13 @@ export const uniquer: Uniquer = (options = {}) => {
         return caches
       }, caches)
 
-
       const temp = Array.from(collects)
       const bytes = temp.filter(every => !!every)
 
       return randomizer({
         bytes,
         max: bytes.length - 1,
-        min: 0
+        min: 0,
       })
     })
 
@@ -152,14 +148,13 @@ export const uniquer: Uniquer = (options = {}) => {
     return uniquer({
       ...options,
       ...newOptions,
-      ...overOptions
+      ...overOptions,
     })
   }
 
   return unique
 }
 
-
 export default {
-  uniquer
+  uniquer,
 }

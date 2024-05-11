@@ -1,7 +1,6 @@
 import { isObject } from './-Object'
 import { isSet } from './-Set'
 
-
 export const isNonEmptyMap = (map: unknown): map is Map<unknown, unknown> => {
   return isMap(map) && map.size > 0
 }
@@ -61,5 +60,5 @@ export default {
   isEmptyMap,
   isMap,
   toMap,
-  newMap
+  newMap,
 }

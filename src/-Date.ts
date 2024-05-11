@@ -2,7 +2,6 @@ import { isNullable } from './~Nullable'
 import { isFiniteNumber } from './-Number'
 import { isNonEmptyString } from './-String'
 
-
 export const isValidDate = (date: unknown): date is Date => {
   return isDate(date) && isFiniteNumber(+date)
 }
@@ -42,7 +41,6 @@ export const toDate = (...rest: unknown[]): Date => {
           month = +number - 1
         }
       }
-
 
       if (index === 1) {
         if (!month && month !== 0 && /^\d{1,2}$/.test(number)) {
@@ -144,7 +142,6 @@ export const newDate = (...rest: unknown[]): Date => {
           month = +number - 1
         }
       }
-
 
       if (index === 1) {
         if (!month && month !== 0 && /^\d{1,2}$/.test(number)) {
@@ -267,7 +264,6 @@ export const today = (): Date => {
   return new Date()
 }
 
-
 export default {
   isValidDate,
   isDate,
@@ -276,5 +272,5 @@ export default {
   showDate,
   yesterday,
   tomorrow,
-  today
+  today,
 }

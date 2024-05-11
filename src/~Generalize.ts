@@ -9,13 +9,11 @@ import { isDate } from './-Date'
 import { isMap } from './-Map'
 import { isSet } from './-Set'
 
-
 export type DeepType = boolean | number
 export type FilterType = string | number | RegExp
 export type FilterTypes = Array<string | number | RegExp>
 export type CloneOptionsType = { omits?: FilterTypes; picks?: FilterTypes; cache?: WeakMap<object, unknown>; deep?: DeepType; }
-export type EqualOptionsType = { strict?: FilterTypes; include?:FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
-
+export type EqualOptionsType = { strict?: FilterTypes; include?: FilterTypes; exclude?: FilterTypes; deep?: DeepType; }
 
 export const omit = <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep: DeepType = false): T => {
   return clone(val, { omits: isArray(arr) ? arr : !isUndef(arr) ? [arr] : [], deep })
@@ -165,7 +163,7 @@ export const equal = (one: unknown, two: unknown, opts: EqualOptionsType | DeepT
   return false
 }
 
-export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false) : T => {
+export const clone = <T = unknown>(val: T, opts: CloneOptionsType | DeepType = false): T => {
   const deep = isObject(opts) && !isUndef(opts.deep) ? opts.deep : opts
   const omits = isObject(opts) && isArray(opts.omits) ? opts.omits.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
   const picks = isObject(opts) && isArray(opts.picks) ? opts.picks.filter(key => isRegExp(key) || isString(key) || isFiniteNumber(key)) : []
@@ -339,7 +337,6 @@ export const deepEqual = (one: unknown, two: unknown, opts: EqualOptionsType = {
   return equal(one, two, { ...opts, deep: true })
 }
 
-
 export default {
   omit,
   pick,
@@ -348,5 +345,5 @@ export default {
   assign,
   deepAssign,
   deepClone,
-  deepEqual
+  deepEqual,
 }

@@ -1,6 +1,6 @@
 
 
-## 1.5.0 (2024-03-08)
+## [1.6.0](https://github.com/linpengteng/js-simpler) (2024-05-11)
 
 
 ### 🎉 Start New Repository
@@ -10,6 +10,7 @@
 
 ### ✨ Features | 新功能
 
+* upgrade eslint, and format codes (pnpm eslint) ([5e4da54](https://github.com/linpengteng/js-simpler/commit/5e4da5478e97dd1428db675d5bd084b869496178))
 * **src/-Number.ts:** add isNaN api of Number ([a8e57a1](https://github.com/linpengteng/js-simpler/commit/a8e57a18365177cfadcbc0793a8c7f9a987d224d))
 * **src/Error.ts:** add new api ([6d42b83](https://github.com/linpengteng/js-simpler/commit/6d42b833577b534d5e6ad8b19e8052bba3d58348))
 * **src/test:** add some test cases and fix some api bug ([5a3a1f4](https://github.com/linpengteng/js-simpler/commit/5a3a1f4dec7dcc66e3470e4c00c9073d561285d0))

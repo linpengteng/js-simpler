@@ -21,7 +21,6 @@ import _Formater from './~Formater'
 import _Uniquer from './~Uniquer'
 import { Tween } from './~Tween'
 
-
 export default {
   Tween,
   ..._Set,
@@ -44,5 +43,5 @@ export default {
   ..._Generalize,
   ..._Animater,
   ..._Formater,
-  ..._Uniquer
+  ..._Uniquer,
 }

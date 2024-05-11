@@ -10,9 +10,8 @@ export const isBoolean = (bool: unknown): bool is boolean => {
   return bool === true || bool === false
 }
 
-
 export default {
   isTrue,
   isFalse,
-  isBoolean
+  isBoolean,
 }

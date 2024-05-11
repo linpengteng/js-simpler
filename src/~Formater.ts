@@ -1,6 +1,5 @@
 import { isNonEmptyString } from './-String'
 
-
 export const lowerCase = <T = any>(string: T): T => {
   return (isNonEmptyString(string) ? string.replace(/[A-Z]/g, t1 => t1 && t1.toLowerCase()) : string) as T
 }
@@ -33,11 +32,10 @@ export const hyphenCase = <T = any>(string: T, first = false): T => {
   ) as T
 }
 
-
 export default {
   lowerCase,
   upperCase,
   camelCase,
   underCase,
-  hyphenCase
+  hyphenCase,
 }

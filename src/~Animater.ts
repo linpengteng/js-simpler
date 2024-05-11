@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
+
 import { isUndef } from './~Nullable'
 import { isObject } from './-Object'
 import { isFunction } from './-Function'
 import { isFiniteNumber } from './-Number'
 import { toFiniteNumber } from './-Number'
 
-
-const debounce = (func: Function, wait: number, options: { leading?: boolean; trailing?: boolean; maxWait?: number; } = {}) => {
+export const debounce = (func: (...rest: any[]) => any, wait: number, options: { leading?: boolean; trailing?: boolean; maxWait?: number; } = {}) => {
   let result: any
   let timerId: any
   let lastArgs: any
@@ -27,7 +28,6 @@ const debounce = (func: Function, wait: number, options: { leading?: boolean; tr
   const trailing = options.trailing !== false
   const useFrame = wait < 20 && typeof window.requestAnimationFrame === 'function'
   const maxWait = isFiniteNumber(options.maxWait) && Math.max(options.maxWait, wait)
-
 
   function timerExpired() {
     const time = Date.now()
@@ -148,7 +148,7 @@ const debounce = (func: Function, wait: number, options: { leading?: boolean; tr
   return debounced
 }
 
-const throttle = (func: Function, wait: number, options: { leading?: boolean; trailing?: boolean } = {}) => {
+export const throttle = (func: (...rest: any[]) => any, wait: number, options: { leading?: boolean; trailing?: boolean; } = {}) => {
   const leading = !isObject(options) || options.leading !== false
   const trailing = !isObject(options) || options.trailing !== false
 
@@ -159,12 +159,11 @@ const throttle = (func: Function, wait: number, options: { leading?: boolean; tr
   return debounce(func, wait, {
     maxWait: wait,
     leading: leading,
-    trailing: trailing
+    trailing: trailing,
   })
 }
 
-
 export default {
   debounce,
-  throttle
+  throttle,
 }

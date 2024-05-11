@@ -2,7 +2,6 @@ import { isObject } from './-Object'
 import { isArray } from './-Array'
 import { isMap } from './-Map'
 
-
 export const isNonEmptySet = (set: unknown): set is Set<unknown> => {
   return isSet(set) && set.size > 0
 }
@@ -55,11 +54,10 @@ export const newSet = (set?: unknown): Set<unknown> => {
   return new Set()
 }
 
-
 export default {
   isNonEmptySet,
   isEmptySet,
   isSet,
   toSet,
-  newSet
+  newSet,
 }

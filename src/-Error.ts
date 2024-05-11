@@ -2,12 +2,11 @@ import { isString } from './-String'
 import { isObject } from './-Object'
 import { isSymbol } from './-Symbol'
 
-
 type DefineMessager = {
-  type?: symbol
-  name?: string
-  stack?: string
-  message?: string
+  type?: symbol;
+  name?: string;
+  stack?: string;
+  message?: string;
   [key: string]: any;
 }
 
@@ -24,7 +23,7 @@ class DefineCustomError<T extends DefineMessager> extends Error {
         ? messager.message
         : isString(messager)
           ? messager
-          : undefined
+          : undefined,
     )
 
     if (isObject(messager)) {
@@ -59,7 +58,6 @@ class DefineCustomError<T extends DefineMessager> extends Error {
   }
 }
 
-
 export const isError = (err: unknown): err is Error => {
   try { return err instanceof Error } catch /* istanbul ignore next */ { return false }
 }
@@ -88,7 +86,6 @@ export const isReferenceError = (err: unknown): err is ReferenceError => {
   try { return err instanceof ReferenceError } catch /* istanbul ignore next */ { return false }
 }
 
-
 export const newError = (message?: string): Error => {
   return new Error(message)
 }
@@ -97,7 +94,7 @@ export const newURIError = (message?: string): URIError => {
   return new URIError(message)
 }
 
-export const newTypeError = (message?: string):TypeError => {
+export const newTypeError = (message?: string): TypeError => {
   return new TypeError(message)
 }
 
@@ -117,7 +114,6 @@ export const newReferenceError = (message?: string): ReferenceError => {
   return new ReferenceError(message)
 }
 
-
 export const isCustomizeError = <T extends Record<string, any> = any>(err: unknown, type?: symbol): err is DefineCustomError<T> => {
   try {
     return (
@@ -130,7 +126,6 @@ export const isCustomizeError = <T extends Record<string, any> = any>(err: unkno
 export const newCustomizeError = <T extends Record<string, any> = any>(messager?: string | DefineMessager): DefineCustomError<T> => {
   return new DefineCustomError(messager)
 }
-
 
 export default {
   isError,
@@ -150,5 +145,5 @@ export default {
   newReferenceError,
 
   isCustomizeError,
-  newCustomizeError
+  newCustomizeError,
 }

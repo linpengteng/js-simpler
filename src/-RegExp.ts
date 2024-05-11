@@ -2,7 +2,6 @@ import { isString } from './-String'
 import { isBoolean } from './-Boolean'
 import { isFiniteNumber } from './-Number'
 
-
 export const isRegExp = (reg: unknown): reg is RegExp => {
   return Object.prototype.toString.call(reg) === '[object RegExp]'
 }
@@ -36,5 +35,5 @@ export const newRegExp = (...rest: unknown[]): RegExp => {
 export default {
   isRegExp,
   toRegExp,
-  newRegExp
+  newRegExp,
 }

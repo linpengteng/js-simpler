@@ -1,7 +1,6 @@
 import { isUndef } from './~Nullable'
 import { isString } from './-String'
 
-
 export const isSymbol = (val: unknown): val is symbol => {
   return Object.prototype.toString.call(val) === '[object Symbol]'
 }
@@ -28,11 +27,10 @@ export const newSymbolFor = (val?: unknown): symbol => {
     : val
 }
 
-
 export default {
   isSymbol,
   toSymbol,
   newSymbol,
   toSymbolFor,
-  newSymbolFor
+  newSymbolFor,
 }

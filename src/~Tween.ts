@@ -62,7 +62,7 @@ const Core = {
       const s = (p / (Math.PI * 2)) * Math.asin(1 / n)
       return n * Math.pow(2, -10 * (t -= 1)) * Math.sin(((t - s) * (Math.PI * 2)) / p) * 0.5 + 1
     }
-  }
+  },
 }
 
 export const Tween = {
@@ -199,7 +199,7 @@ export const Tween = {
       return Tween.bounceIn(t * 2) * 0.5
     }
     return Tween.bounceOut(t * 2 - 1) * 0.5 + 0.5
-  }
+  },
 }
 
 export default { ...Tween }

@@ -7,7 +7,6 @@ import { isDate } from './-Date'
 import { isMap } from './-Map'
 import { isSet } from './-Set'
 
-
 export const isWeakSet = (set?: unknown): set is WeakSet<object> => {
   return Object.prototype.toString.call(set) === '[object WeakSet]'
 }
@@ -32,7 +31,7 @@ export const toWeakSet = (set?: unknown): WeakSet<object> => {
         isDate(item) ||
         isMap(item) ||
         isSet(item)
-      )
+      ),
     ))
   }
 
@@ -51,7 +50,7 @@ export const toWeakSet = (set?: unknown): WeakSet<object> => {
         isDate(item) ||
         isMap(item) ||
         isSet(item)
-      )
+      ),
     ))
   }
 
@@ -74,7 +73,7 @@ export const newWeakSet = (set?: unknown): WeakSet<object> => {
         isDate(item) ||
         isMap(item) ||
         isSet(item)
-      )
+      ),
     ))
   }
 
@@ -93,16 +92,15 @@ export const newWeakSet = (set?: unknown): WeakSet<object> => {
         isDate(item) ||
         isMap(item) ||
         isSet(item)
-      )
+      ),
     ))
   }
 
   return new WeakSet()
 }
 
-
 export default {
   isWeakSet,
   toWeakSet,
-  newWeakSet
+  newWeakSet,
 }

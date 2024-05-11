@@ -7,7 +7,6 @@ import { isDate } from './-Date'
 import { isMap } from './-Map'
 import { isSet } from './-Set'
 
-
 export const isWeakMap = (map: unknown): map is WeakMap<object, unknown> => {
   return Object.prototype.toString.call(map) === '[object WeakMap]'
 }
@@ -28,7 +27,7 @@ export const toWeakMap = (map?: unknown): WeakMap<object, unknown> => {
         isDate(arr[0]) ||
         isMap(arr[0]) ||
         isSet(arr[0])
-      ))
+      )),
     )
   }
 
@@ -43,7 +42,7 @@ export const toWeakMap = (map?: unknown): WeakMap<object, unknown> => {
         isDate(arr[0]) ||
         isMap(arr[0]) ||
         isSet(arr[0])
-      ))
+      )),
     )
   }
 
@@ -62,7 +61,7 @@ export const newWeakMap = (map?: unknown): WeakMap<any, unknown> => {
         isDate(arr[0]) ||
         isMap(arr[0]) ||
         isSet(arr[0])
-      ))
+      )),
     )
   }
 
@@ -77,16 +76,15 @@ export const newWeakMap = (map?: unknown): WeakMap<any, unknown> => {
         isDate(arr[0]) ||
         isMap(arr[0]) ||
         isSet(arr[0])
-      ))
+      )),
     )
   }
 
   return new WeakMap()
 }
 
-
 export default {
   isWeakMap,
   toWeakMap,
-  newWeakMap
+  newWeakMap,
 }

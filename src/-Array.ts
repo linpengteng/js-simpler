@@ -32,11 +32,10 @@ export const newArray = (...rest: unknown[]): any[] => {
   }
 }
 
-
 export default {
   isNonEmptyArray,
   isEmptyArray,
   isArray,
   toArray,
-  newArray
+  newArray,
 }

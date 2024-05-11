@@ -112,7 +112,6 @@ export const toFixed = (num?: unknown, lie = NaN): string => {
   return ''
 }
 
-
 export default {
   isNaN,
   isNumber,
@@ -124,5 +123,5 @@ export default {
   toDecimal,
   toInteger,
   toNumber,
-  toFixed
+  toFixed,
 }

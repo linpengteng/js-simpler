@@ -227,7 +227,7 @@ declare const isFalse: (bool: unknown) => bool is false;
 declare const isBoolean: (bool: unknown) => bool is boolean;
 
 declare const isPromise: (val: unknown) => val is Promise<unknown>;
-declare const toPromise: <T = unknown>(wait?: Function | number | unknown) => Promise<T>;
+declare const toPromise: <T = unknown>(wait?: ((...rest: any[]) => any) | number | unknown) => Promise<T>;
 declare const newPromise: <T = unknown>() => {
     promise: Promise<T>;
     resolve: (value: T | PromiseLike<T>) => void;
@@ -242,15 +242,33 @@ declare const isWeakMap: (map: unknown) => map is WeakMap<object, unknown>;
 declare const toWeakMap: (map?: unknown) => WeakMap<object, unknown>;
 declare const newWeakMap: (map?: unknown) => WeakMap<any, unknown>;
 
-declare const isGeneratorFunction: (func: unknown) => func is Function;
-declare const isGeneralFunction: (func: unknown) => func is Function;
-declare const isAsyncFunction: (func: unknown) => func is Function;
-declare const isFunction: (func: unknown) => func is Function;
-declare const toFunction: (...rest: unknown[]) => Function;
+declare const isGeneratorFunction: (func: unknown) => func is (...rest: any[]) => void;
+declare const isGeneralFunction: (func: unknown) => func is (...rest: any[]) => void;
+declare const isAsyncFunction: (func: unknown) => func is (...rest: any[]) => void;
+declare const isFunction: (func: unknown) => func is (...rest: any[]) => void;
+declare const toFunction: (...rest: unknown[]) => (...rest: any[]) => void;
 
 declare const isNull: (val: unknown) => val is null;
 declare const isUndef: (val: unknown) => val is undefined;
 declare const isNullable: (val: unknown) => val is null | undefined;
+
+declare const debounce: (func: (...rest: any[]) => any, wait: number, options?: {
+    leading?: boolean;
+    trailing?: boolean;
+    maxWait?: number;
+}) => {
+    (this: any, ...rest: any[]): any;
+    cancel: () => void;
+    flush: () => any;
+};
+declare const throttle: (func: (...rest: any[]) => any, wait: number, options?: {
+    leading?: boolean;
+    trailing?: boolean;
+}) => {
+    (this: any, ...rest: any[]): any;
+    cancel: () => void;
+    flush: () => any;
+};
 
 declare const lowerCase: <T = any>(string: T) => T;
 declare const upperCase: <T = any>(string: T) => T;
@@ -299,7 +317,7 @@ declare const _default: {
     camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
     underCase: <T_3 = any>(string: T_3, first?: boolean) => T_3;
     hyphenCase: <T_4 = any>(string: T_4, first?: boolean) => T_4;
-    debounce: (func: Function, wait: number, options?: {
+    debounce: (func: (...rest: any[]) => any, wait: number, options?: {
         leading?: boolean | undefined;
         trailing?: boolean | undefined;
         maxWait?: number | undefined;
@@ -308,7 +326,7 @@ declare const _default: {
         cancel: () => void;
         flush: () => any;
     };
-    throttle: (func: Function, wait: number, options?: {
+    throttle: (func: (...rest: any[]) => any, wait: number, options?: {
         leading?: boolean | undefined;
         trailing?: boolean | undefined;
     }) => {
@@ -328,11 +346,11 @@ declare const _default: {
     isNull: (val: unknown) => val is null;
     isUndef: (val: unknown) => val is undefined;
     isNullable: (val: unknown) => val is null | undefined;
-    isGeneratorFunction: (func: unknown) => func is Function;
-    isGeneralFunction: (func: unknown) => func is Function;
-    isAsyncFunction: (func: unknown) => func is Function;
-    isFunction: (func: unknown) => func is Function;
-    toFunction: (...rest: unknown[]) => Function;
+    isGeneratorFunction: (func: unknown) => func is (...rest: any[]) => void;
+    isGeneralFunction: (func: unknown) => func is (...rest: any[]) => void;
+    isAsyncFunction: (func: unknown) => func is (...rest: any[]) => void;
+    isFunction: (func: unknown) => func is (...rest: any[]) => void;
+    toFunction: (...rest: unknown[]) => (...rest: any[]) => void;
     isWeakMap: (map: unknown) => map is WeakMap<object, unknown>;
     toWeakMap: (map?: unknown) => WeakMap<object, unknown>;
     newWeakMap: (map?: unknown) => WeakMap<any, unknown>;
@@ -474,4 +492,4 @@ declare const _default: {
     };
 };
 
-export { type CacherOptions, type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, type ListenCacherHandler, type Randomize, type RandomizeOptions, type ReduplicateHandler, Tween, type Uniquer, type UniquerOptions, assign, camelCase, clone, curry, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInfinity, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, uniquer, upperCase, yesterday };
+export { type CacherOptions, type CloneOptionsType, type Curry, type CurryFn1, type CurryFn2, type CurryFn3, type CurryFn4, type CurryFn5, type DeepType, type EqualOptionsType, type FilterType, type FilterTypes, type ListenCacherHandler, type Randomize, type RandomizeOptions, type ReduplicateHandler, Tween, type Uniquer, type UniquerOptions, assign, camelCase, clone, curry, debounce, deepAssign, deepClone, deepEqual, _default as default, equal, hyphenCase, isArray, isAsyncFunction, isBoolean, isCustomizeError, isDate, isDecimal, isEmptyArray, isEmptyMap, isEmptyObject, isEmptySet, isEmptyString, isError, isEvalError, isFalse, isFiniteNumber, isFunction, isGeneralFunction, isGeneratorFunction, isInfinity, isInteger, isMap, isNaN, isNonEmptyArray, isNonEmptyMap, isNonEmptyObject, isNonEmptySet, isNonEmptyString, isNull, isNullable, isNumber, isObject, isPromise, isRangeError, isReferenceError, isRegExp, isSet, isString, isSymbol, isSyntaxError, isTrue, isTypeError, isURIError, isUndef, isValidDate, isWeakMap, isWeakSet, lowerCase, newArray, newCustomizeError, newDate, newError, newEvalError, newMap, newObject, newPromise, newRangeError, newReferenceError, newRegExp, newSet, newSymbol, newSymbolFor, newSyntaxError, newTypeError, newURIError, newWeakMap, newWeakSet, omit, pick, showDate, throttle, toArray, toDate, toDecimal, toFiniteNumber, toFixed, toFunction, toInteger, toMap, toNumber, toObject, toPromise, toRegExp, toSet, toSymbol, toSymbolFor, toWeakMap, toWeakSet, today, tomorrow, underCase, uniquer, upperCase, yesterday };

@@ -10,9 +10,8 @@ export const isString = (str: unknown): str is string => {
   return Object.prototype.toString.call(str) === '[object String]'
 }
 
-
 export default {
   isNonEmptyString,
   isEmptyString,
-  isString
+  isString,
 }
