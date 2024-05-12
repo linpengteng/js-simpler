@@ -87,12 +87,12 @@ export interface CurryFn5<T1, T2, T3, T4, T5, R> {
   (this: any, t1: T1, t2: T2, t3: T3, t4: T4, t5: T5): R;
 }
 
-export const curry: Curry = function(this: any, fn: (...rest: any[]) => any, length?: number) {
+export const curry: Curry = function(this: any, fn: Function, length?: number) {
   if (!isFunction(fn)) {
     throw new TypeError('#<fn> is not a function')
   }
 
-  const currying = (fn: (...rest: any[]) => any, length: number, holder: any, params: any[], holders: any[]) => {
+  const currying = (fn: Function, length: number, holder: any, params: any[], holders: any[]) => {
     const wrapper = (...rest: any[]) => {
       const _params = params.slice()
       const _holders = holders.slice()

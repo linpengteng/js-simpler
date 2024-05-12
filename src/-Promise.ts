@@ -5,7 +5,7 @@ export const isPromise = (val: unknown): val is Promise<unknown> => {
   return Object.prototype.toString.call(val) === '[object Promise]'
 }
 
-export const toPromise = <T = unknown>(wait?: ((...rest: any[]) => any) | number | unknown): Promise<T> => {
+export const toPromise = <T = unknown>(wait?: Function | number | unknown): Promise<T> => {
   if (isPromise(wait)) {
     return wait as Promise<T>
   }

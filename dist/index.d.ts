@@ -227,7 +227,7 @@ declare const isFalse: (bool: unknown) => bool is false;
 declare const isBoolean: (bool: unknown) => bool is boolean;
 
 declare const isPromise: (val: unknown) => val is Promise<unknown>;
-declare const toPromise: <T = unknown>(wait?: ((...rest: any[]) => any) | number | unknown) => Promise<T>;
+declare const toPromise: <T = unknown>(wait?: Function | number | unknown) => Promise<T>;
 declare const newPromise: <T = unknown>() => {
     promise: Promise<T>;
     resolve: (value: T | PromiseLike<T>) => void;
@@ -242,17 +242,17 @@ declare const isWeakMap: (map: unknown) => map is WeakMap<object, unknown>;
 declare const toWeakMap: (map?: unknown) => WeakMap<object, unknown>;
 declare const newWeakMap: (map?: unknown) => WeakMap<any, unknown>;
 
-declare const isGeneratorFunction: (func: unknown) => func is (...rest: any[]) => void;
-declare const isGeneralFunction: (func: unknown) => func is (...rest: any[]) => void;
-declare const isAsyncFunction: (func: unknown) => func is (...rest: any[]) => void;
-declare const isFunction: (func: unknown) => func is (...rest: any[]) => void;
-declare const toFunction: (...rest: unknown[]) => (...rest: any[]) => void;
+declare const isGeneratorFunction: (func: unknown) => func is Function;
+declare const isGeneralFunction: (func: unknown) => func is Function;
+declare const isAsyncFunction: (func: unknown) => func is Function;
+declare const isFunction: (func: unknown) => func is Function;
+declare const toFunction: (...rest: unknown[]) => Function;
 
 declare const isNull: (val: unknown) => val is null;
 declare const isUndef: (val: unknown) => val is undefined;
 declare const isNullable: (val: unknown) => val is null | undefined;
 
-declare const debounce: (func: (...rest: any[]) => any, wait: number, options?: {
+declare const debounce: (func: Function, wait: number, options?: {
     leading?: boolean;
     trailing?: boolean;
     maxWait?: number;
@@ -261,7 +261,7 @@ declare const debounce: (func: (...rest: any[]) => any, wait: number, options?: 
     cancel: () => void;
     flush: () => any;
 };
-declare const throttle: (func: (...rest: any[]) => any, wait: number, options?: {
+declare const throttle: (func: Function, wait: number, options?: {
     leading?: boolean;
     trailing?: boolean;
 }) => {
@@ -317,7 +317,7 @@ declare const _default: {
     camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
     underCase: <T_3 = any>(string: T_3, first?: boolean) => T_3;
     hyphenCase: <T_4 = any>(string: T_4, first?: boolean) => T_4;
-    debounce: (func: (...rest: any[]) => any, wait: number, options?: {
+    debounce: (func: Function, wait: number, options?: {
         leading?: boolean | undefined;
         trailing?: boolean | undefined;
         maxWait?: number | undefined;
@@ -326,7 +326,7 @@ declare const _default: {
         cancel: () => void;
         flush: () => any;
     };
-    throttle: (func: (...rest: any[]) => any, wait: number, options?: {
+    throttle: (func: Function, wait: number, options?: {
         leading?: boolean | undefined;
         trailing?: boolean | undefined;
     }) => {
@@ -346,11 +346,11 @@ declare const _default: {
     isNull: (val: unknown) => val is null;
     isUndef: (val: unknown) => val is undefined;
     isNullable: (val: unknown) => val is null | undefined;
-    isGeneratorFunction: (func: unknown) => func is (...rest: any[]) => void;
-    isGeneralFunction: (func: unknown) => func is (...rest: any[]) => void;
-    isAsyncFunction: (func: unknown) => func is (...rest: any[]) => void;
-    isFunction: (func: unknown) => func is (...rest: any[]) => void;
-    toFunction: (...rest: unknown[]) => (...rest: any[]) => void;
+    isGeneratorFunction: (func: unknown) => func is Function;
+    isGeneralFunction: (func: unknown) => func is Function;
+    isAsyncFunction: (func: unknown) => func is Function;
+    isFunction: (func: unknown) => func is Function;
+    toFunction: (...rest: unknown[]) => Function;
     isWeakMap: (map: unknown) => map is WeakMap<object, unknown>;
     toWeakMap: (map?: unknown) => WeakMap<object, unknown>;
     newWeakMap: (map?: unknown) => WeakMap<any, unknown>;

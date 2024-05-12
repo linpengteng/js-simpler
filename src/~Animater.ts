@@ -6,7 +6,7 @@ import { isFunction } from './-Function'
 import { isFiniteNumber } from './-Number'
 import { toFiniteNumber } from './-Number'
 
-export const debounce = (func: (...rest: any[]) => any, wait: number, options: { leading?: boolean; trailing?: boolean; maxWait?: number; } = {}) => {
+export const debounce = (func: Function, wait: number, options: { leading?: boolean; trailing?: boolean; maxWait?: number; } = {}) => {
   let result: any
   let timerId: any
   let lastArgs: any
@@ -148,7 +148,7 @@ export const debounce = (func: (...rest: any[]) => any, wait: number, options: {
   return debounced
 }
 
-export const throttle = (func: (...rest: any[]) => any, wait: number, options: { leading?: boolean; trailing?: boolean; } = {}) => {
+export const throttle = (func: Function, wait: number, options: { leading?: boolean; trailing?: boolean; } = {}) => {
   const leading = !isObject(options) || options.leading !== false
   const trailing = !isObject(options) || options.trailing !== false
 

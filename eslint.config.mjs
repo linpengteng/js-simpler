@@ -76,6 +76,7 @@ export default tseslint.config({
       asyncArrow: 'never',
     }],
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-namespace': ['error', {
       allowDeclarations: true,
