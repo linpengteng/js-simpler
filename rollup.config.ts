@@ -4,7 +4,6 @@ import terser from '@rollup/plugin-terser'
 import babel from '@rollup/plugin-babel'
 import dts from 'rollup-plugin-dts'
 
-
 /**
  * Rollup Configuration
  */
@@ -18,8 +17,8 @@ export default defineConfig([
         format: 'umd',
         sourcemap: false,
         entryFileNames: 'index.[name].js',
-        chunkFileNames: 'index.[name]-[hash].js'
-      }
+        chunkFileNames: 'index.[name]-[hash].js',
+      },
     ],
     plugins: [
       typescript({ sourceMap: false }),
@@ -27,9 +26,9 @@ export default defineConfig([
       babel({
         extensions: ['.ts'],
         babelHelpers: 'bundled',
-        exclude: ['node_modules']
-      })
-    ]
+        exclude: ['node_modules'],
+      }),
+    ],
   },
 
   {
@@ -41,7 +40,7 @@ export default defineConfig([
         exports: 'named',
         sourcemap: false,
         entryFileNames: 'index.[name].cjs',
-        chunkFileNames: 'index.[name]-[hash].cjs'
+        chunkFileNames: 'index.[name]-[hash].cjs',
       },
       {
         dir: 'dist',
@@ -49,13 +48,13 @@ export default defineConfig([
         exports: 'named',
         sourcemap: false,
         entryFileNames: 'index.[name].mjs',
-        chunkFileNames: 'index.[name]-[hash].mjs'
-      }
+        chunkFileNames: 'index.[name]-[hash].mjs',
+      },
     ],
     plugins: [
       typescript({ sourceMap: false }),
-      terser()
-    ]
+      terser(),
+    ],
   },
 
   {
@@ -63,8 +62,8 @@ export default defineConfig([
     output: {
       file: 'dist/index.d.ts',
       format: 'es',
-      sourcemap: false
+      sourcemap: false,
     },
-    plugins: [dts()]
-  }
+    plugins: [dts()],
+  },
 ])

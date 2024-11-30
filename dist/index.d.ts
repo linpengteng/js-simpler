@@ -313,34 +313,34 @@ declare const Tween: {
 declare const _default: {
     uniquer: Uniquer;
     lowerCase: <T = any>(string: T) => T;
-    upperCase: <T_1 = any>(string: T_1) => T_1;
-    camelCase: <T_2 = any>(string: T_2, first?: boolean) => T_2;
-    underCase: <T_3 = any>(string: T_3, first?: boolean) => T_3;
-    hyphenCase: <T_4 = any>(string: T_4, first?: boolean) => T_4;
+    upperCase: <T = any>(string: T) => T;
+    camelCase: <T = any>(string: T, first?: boolean) => T;
+    underCase: <T = any>(string: T, first?: boolean) => T;
+    hyphenCase: <T = any>(string: T, first?: boolean) => T;
     debounce: (func: Function, wait: number, options?: {
-        leading?: boolean | undefined;
-        trailing?: boolean | undefined;
-        maxWait?: number | undefined;
+        leading?: boolean;
+        trailing?: boolean;
+        maxWait?: number;
     }) => {
         (this: any, ...rest: any[]): any;
         cancel: () => void;
         flush: () => any;
     };
     throttle: (func: Function, wait: number, options?: {
-        leading?: boolean | undefined;
-        trailing?: boolean | undefined;
+        leading?: boolean;
+        trailing?: boolean;
     }) => {
         (this: any, ...rest: any[]): any;
         cancel: () => void;
         flush: () => any;
     };
-    omit: <T_5 = unknown>(val: T_5, arr?: FilterTypes | FilterType | undefined, deep?: DeepType) => T_5;
-    pick: <T_6 = unknown>(val: T_6, arr?: FilterTypes | FilterType | undefined, deep?: DeepType) => T_6;
-    equal: (one: unknown, two: unknown, opts?: DeepType | EqualOptionsType) => boolean;
-    clone: <T_7 = unknown>(val: T_7, opts?: DeepType | CloneOptionsType) => T_7;
-    assign: <T_8 = unknown>(val: T_8, ...rest: any[]) => T_8;
-    deepAssign: <T_9 = unknown>(val: T_9, ...rest: any[]) => T_9;
-    deepClone: <T_10 = unknown>(val: T_10, opts?: CloneOptionsType) => T_10;
+    omit: <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep?: DeepType) => T;
+    pick: <T = unknown>(val: T, arr?: FilterTypes | FilterType, deep?: DeepType) => T;
+    equal: (one: unknown, two: unknown, opts?: EqualOptionsType | DeepType) => boolean;
+    clone: <T = unknown>(val: T, opts?: CloneOptionsType | DeepType) => T;
+    assign: <T = unknown>(val: T, ...rest: any[]) => T;
+    deepAssign: <T = unknown>(val: T, ...rest: any[]) => T;
+    deepClone: <T = unknown>(val: T, opts?: CloneOptionsType) => T;
     deepEqual: (one: unknown, two: unknown, opts?: EqualOptionsType) => boolean;
     curry: Curry;
     isNull: (val: unknown) => val is null;
@@ -358,10 +358,10 @@ declare const _default: {
     toWeakSet: (set?: unknown) => WeakSet<object>;
     newWeakSet: (set?: unknown) => WeakSet<object>;
     isPromise: (val: unknown) => val is Promise<unknown>;
-    toPromise: <T_11 = unknown>(wait?: unknown) => Promise<T_11>;
-    newPromise: <T_12 = unknown>() => {
-        promise: Promise<T_12>;
-        resolve: (value: T_12 | PromiseLike<T_12>) => void;
+    toPromise: <T = unknown>(wait?: Function | number | unknown) => Promise<T>;
+    newPromise: <T = unknown>() => {
+        promise: Promise<T>;
+        resolve: (value: T | PromiseLike<T>) => void;
         reject: (reason?: any) => void;
     };
     isTrue: (bool: unknown) => bool is true;
@@ -391,7 +391,7 @@ declare const _default: {
     isFiniteNumber: (num: unknown) => num is number;
     toFiniteNumber: (num?: unknown, lie?: number) => number;
     toDecimal: (num?: unknown, lie?: number) => number;
-    toInteger: (num?: unknown, _?: undefined) => number;
+    toInteger: (num?: unknown, _?: never) => number;
     toNumber: (num?: unknown, lie?: number) => number;
     toFixed: (num?: unknown, lie?: number) => string;
     isNonEmptyArray: (arr: unknown) => arr is any[];
@@ -406,44 +406,44 @@ declare const _default: {
     isRangeError: (err: unknown) => err is RangeError;
     isSyntaxError: (err: unknown) => err is SyntaxError;
     isReferenceError: (err: unknown) => err is ReferenceError;
-    newError: (message?: string | undefined) => Error;
-    newURIError: (message?: string | undefined) => URIError;
-    newTypeError: (message?: string | undefined) => TypeError;
-    newEvalError: (message?: string | undefined) => EvalError;
-    newRangeError: (message?: string | undefined) => RangeError;
-    newSyntaxError: (message?: string | undefined) => SyntaxError;
-    newReferenceError: (message?: string | undefined) => ReferenceError;
-    isCustomizeError: <T_13 extends Record<string, any> = any>(err: unknown, type?: symbol | undefined) => err is {
+    newError: (message?: string) => Error;
+    newURIError: (message?: string) => URIError;
+    newTypeError: (message?: string) => TypeError;
+    newEvalError: (message?: string) => EvalError;
+    newRangeError: (message?: string) => RangeError;
+    newSyntaxError: (message?: string) => SyntaxError;
+    newReferenceError: (message?: string) => ReferenceError;
+    isCustomizeError: <T extends Record<string, any> = any>(err: unknown, type?: symbol) => err is {
         type: symbol;
         name: string;
         stack: string;
         message: string;
         options: {
             [key: string]: any;
-        } & T_13;
+        } & T;
         cause?: unknown;
     };
-    newCustomizeError: <T_14 extends Record<string, any> = any>(messager?: string | {
+    newCustomizeError: <T extends Record<string, any> = any>(messager?: string | {
         [key: string]: any;
-        type?: symbol | undefined;
-        name?: string | undefined;
-        stack?: string | undefined;
-        message?: string | undefined;
-    } | undefined) => {
+        type?: symbol;
+        name?: string;
+        stack?: string;
+        message?: string;
+    }) => {
         type: symbol;
         name: string;
         stack: string;
         message: string;
         options: {
             [key: string]: any;
-        } & T_14;
+        } & T;
         cause?: unknown;
     };
     isValidDate: (date: unknown) => date is Date;
     isDate: (date: unknown) => date is Date;
     toDate: (...rest: unknown[]) => Date;
     newDate: (...rest: unknown[]) => Date;
-    showDate: (time: unknown, format?: string | undefined) => string;
+    showDate: (time: unknown, format?: string) => string;
     yesterday: () => Date;
     tomorrow: () => Date;
     today: () => Date;

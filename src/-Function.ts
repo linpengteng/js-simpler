@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+
 export const isGeneratorFunction = (func: unknown): func is Function => {
   return Object.prototype.toString.call(func) === '[object GeneratorFunction]'
 }

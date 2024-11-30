@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+
 import { isFunction } from './-Function'
 import { isInteger } from './-Number'
 

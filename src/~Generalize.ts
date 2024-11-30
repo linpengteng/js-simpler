@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import { isFiniteNumber, isNumber, isNaN } from './-Number'
 import { isWeakMap } from './-WeakMap'
 import { isUndef } from './~Nullable'
